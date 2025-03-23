@@ -2,15 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-
-// Demo: Fake-Datenbank (später ersetzen mit echter DB)
-const users = []; // Temporär für gespeicherte User
+const db = require('../config/db');
 
 // Registrierung
 router.post('/register', async (req, res) => {
   const { username, email, password, passwordRepeat } = req.body;
 
-  // Basic-Validierung
   if (!username || !email || !password || !passwordRepeat) {
     return res.status(400).json({ error: "Bitte alle Felder ausfüllen." });
   }
@@ -19,14 +16,25 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: "Passwörter stimmen nicht überein." });
   }
 
-  // Passwort hashen
-  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  // In 'Datenbank' speichern
-  const newUser = { username, email, password: hashedPassword };
-  users.push(newUser);
+    const stmt = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`;
+    db.run(stmt, [username, email, hashedPassword], function (err) {
+      if (err) {
+        console.error(err.message);
+        return res.status(500).json({ error: "Email existiert bereits oder DB-Fehler" });
+      }
 
-  return res.status(201).json({ message: "Registrierung erfolgreich!", user: { username, email } });
+      return res.status(201).json({
+        message: "Registrierung erfolgreich!",
+        user: { id: this.lastID, username, email }
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Interner Fehler bei der Registrierung" });
+  }
 });
 
 // Login
