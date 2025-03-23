@@ -1,4 +1,3 @@
-// js/login.js
 const form = document.getElementById('loginForm');
 const msg = document.getElementById('msg');
 const db = require('backend/config/db');
