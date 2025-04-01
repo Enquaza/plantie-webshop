@@ -7,9 +7,9 @@ const dbPath = path.resolve(__dirname, 'plantie.db');
 // Verbindung zur Datenbank herstellen
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('❌ Fehler beim Öffnen der Datenbank:', err.message);
+        console.error('Fehler beim Öffnen der Datenbank:', err.message);
     } else {
-        console.log('✅ Verbunden mit SQLite-Datenbank unter:', dbPath);
+        console.log('Verbunden mit SQLite-Datenbank unter:', dbPath);
     }
 });
 
@@ -25,9 +25,27 @@ db.serialize(() => {
     )
   `, (err) => {
         if (err) {
-            console.error("❌ Fehler beim Erstellen der Tabelle:", err.message);
+            console.error("Fehler beim Erstellen der Tabelle:", err.message);
         } else {
-            console.log("✅ Tabelle 'users' bereit.");
+            console.log("Tabelle 'users' bereit.");
+        }
+    });
+    // Produkt-Tabelle
+    db.run(`
+    CREATE TABLE IF NOT EXISTS products (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      description TEXT,
+      category TEXT NOT NULL,
+      price REAL NOT NULL,
+      rating INTEGER DEFAULT 0,
+      image TEXT
+    )
+  `, (err) => {
+        if (err) {
+            console.error("Fehler beim Erstellen der Tabelle 'products':", err.message);
+        } else {
+            console.log("Tabelle 'products' bereit.");
         }
     });
 });

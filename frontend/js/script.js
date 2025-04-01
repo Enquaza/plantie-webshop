@@ -1,4 +1,5 @@
-fetch('http://localhost:3000/api/test')
+// Verbindungstest mit Backend
+fetch(`http://${window.location.hostname}:3000/api/test`)
     .then(res => res.json())
     .then(data => {
         document.getElementById('backend-msg').textContent = data.message;
@@ -6,18 +7,3 @@ fetch('http://localhost:3000/api/test')
     .catch(err => {
         console.error('Fehler beim Laden:', err);
     });
-
-// Beispiel Login per Fetch
-fetch('http://localhost:3000/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        email: 'max@plantie.at',
-        password: 'test123'
-    })
-})
-    .then(res => res.json())
-    .then(data => {
-        console.log('Login erfolgreich:', data);
-    })
-    .catch(err => console.error('Fehler beim Login:', err));

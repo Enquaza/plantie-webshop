@@ -1,12 +1,12 @@
-// app.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+// Route Const
 const loginRoutes = require('./routes/login');
+const productRoutes = require('./routes/products');
 
 const app = express();
-
 const db = require('./config/db');
 
 // Middlewares
@@ -18,16 +18,7 @@ app.use(bodyParser.json());
 
 // API Routes
 app.use('/api/auth', loginRoutes);
-
-// Datenbank Test
-app.get('/api/users', (req, res) => {
-    db.all("SELECT id, username, email, created_at FROM users", [], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: "Datenbankfehler" });
-        }
-        res.json(rows);
-    });
-});
+app.use('/api/products', productRoutes);
 
 // Test-Route
 app.get('/api/test', (req, res) => {
@@ -40,5 +31,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Server läuft auf http://localhost:${PORT}`);
 });
+
 // Backend Server starten: npm run dev
 // Frontend Server: im dir /frontend:  http-server -p 5500
