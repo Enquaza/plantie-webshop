@@ -41,17 +41,28 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = users.find(u => u.email === email);
-  if (!user) {
-    return res.status(401).json({ error: "User nicht gefunden." });
-  }
+  const sql = `SELECT * FROM users WHERE email = ?`;
 
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) {
-    return res.status(401).json({ error: "Falsches Passwort." });
-  }
+  db.get(sql, [email], async (err, user) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Datenbankfehler beim Login." });
+    }
 
-  return res.status(200).json({ message: "Login erfolgreich!", user: { username: user.username, email: user.email } });
+    if (!user) {
+      return res.status(401).json({ error: "User nicht gefunden." });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Falsches Passwort." });
+    }
+
+    return res.status(200).json({
+      message: "Login erfolgreich!",
+      user: { id: user.id, username: user.username, email: user.email }
+    });
+  });
 });
 
 module.exports = router;

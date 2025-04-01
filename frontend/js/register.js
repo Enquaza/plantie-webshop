@@ -1,6 +1,7 @@
 const form = document.getElementById('registerForm');
 const msg = document.getElementById('msg');
 
+// Nutzer drückt auf Registrieren -> Funktion wird gefeuert
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -24,6 +25,7 @@ form.addEventListener('submit', async (e) => {
             msg.textContent = "🎉 Registrierung erfolgreich!";
             msg.style.color = "green";
             form.reset();
+
         } else {
             msg.textContent = "❌ " + (result.error || "Unbekannter Fehler");
             msg.style.color = "red";
