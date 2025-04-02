@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Produkte verwalten | Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Produktverwaltung</h1>
+
+    <section>
+        <h2>Neues Produkt hinzufügen</h2>
+        <form id="productForm">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="description" placeholder="Beschreibung" required>
+            <input type="text" name="category" placeholder="Kategorie" required>
+            <input type="number" step="0.01" name="price" placeholder="Preis (€)" required>
+            <input type="number" name="rating" min="1" max="5" placeholder="Bewertung (1-5)" required>
+            <input type="text" name="image" placeholder="Bilddateiname (z. B. aloe.jpg)" required>
+
+            <button type="submit">Produkt hinzufügen</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Vorhandene Produkte</h2>
+        <table id="productTable">
+            <thead>
+            <tr>
+                <th>Name</th><th>Kategorie</th><th>Preis</th><th>Bild</th><th>Aktion</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+</div>
+
+<script src="/js/admin-products.js"></script>
+</body>
+</html>
