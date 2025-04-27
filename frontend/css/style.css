@@ -1,6 +1,11 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+h1 { /* Für Titel */
+  margin: 19% 0 0 0;
+  font-size: 5rem;
+}
+
+h4 { /* Überschrift */
+  margin: 20px 0px;
+  font-size: 1.7rem;
 }
 
 .nav-buttons {
@@ -12,6 +17,38 @@ body {
   font-size: 16px;
 }
 
-a {
-  color: #00B7FF;
+.home-cont {
+  align-items: center;
+  margin: 5% 0 0 0;
+}
+
+.home-cont div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 50px;
+  border-radius: 5%;
+  background: white;
+}
+
+.home-cont div img {
+  width: 60%;
+  height: auto;
+  margin: 20% 0;
+}
+
+.home-cont div p {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 15%;
+}
+
+.par-green {
+  background: #BDDBC3;
+  padding: 3%;
+}
+.par-beige {
+  background: #F5F4F0;
+  padding: 3%;
 }
