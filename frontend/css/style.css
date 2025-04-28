@@ -27,7 +27,7 @@ h4 { /* Überschrift */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0px 50px;
+  padding: 10px 50px;
   border-radius: 5%;
   background: white;
 }
