@@ -1,18 +1,19 @@
 const form = document.getElementById('loginForm');
 const msg = document.getElementById('msg');
-const db = require('backend/config/db');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = form.email.value;
     const password = form.password.value;
+    const remember = form.remember.checked
 
     try {
         const res = await fetch('http://localhost:3000/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            credentials: 'include',
+            body: JSON.stringify({ email, password, remember })
         });
 
         const data = await res.json();
@@ -20,6 +21,7 @@ form.addEventListener('submit', async (e) => {
         if (res.ok) {
             msg.textContent = `🎉 Login erfolgreich: Willkommen ${data.user.username}`;
             msg.style.color = 'green';
+            form.reset();
         } else {
             msg.textContent = `❌ Fehler: ${data.error || 'Unbekannter Fehler'}`;
             msg.style.color = 'red';

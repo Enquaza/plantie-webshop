@@ -39,8 +39,10 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
 
+  //debug
+  console.log("Anfrage-Daten:", req.body);
   const sql = `SELECT * FROM users WHERE email = ?`;
 
   db.get(sql, [email], async (err, user) => {
@@ -58,11 +60,34 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "Falsches Passwort." });
     }
 
+    //Session setzen
+    req.session.user = {
+      id: user.id,
+      username: user.username,
+      email: user.email
+    };
+
+    //Cookie setzen, wenn "Login merken" gewählt wurde
+    if (remember) {
+      req.session.cookie.maxAge = 7 * 24 * 60 * 60 * 1000; // 1 Woche
+    } else {
+      req.session.cookie.expires = false; // Session läuft mit dem Browser aus
+    }
+
     return res.status(200).json({
       message: "Login erfolgreich!",
       user: { id: user.id, username: user.username, email: user.email }
     });
   });
+});
+
+// Check-Route: Ist der User eingeloggt?
+router.get('/check', (req, res) => {
+  if (req.session.user) {
+    res.json({ loggedIn: true, user: req.session.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
 });
 
 module.exports = router;

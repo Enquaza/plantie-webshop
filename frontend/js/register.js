@@ -5,6 +5,8 @@ const msg = document.getElementById('msg');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    console.log("Submitted!");
+
     const data = {
         username: form.username.value,
         email: form.email.value,

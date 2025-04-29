@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 // Route Const
 const loginRoutes = require('./routes/login');
@@ -15,6 +17,17 @@ app.use(cors({
     credentials: true
 }));
 app.use(bodyParser.json());
+
+app.use(cookieParser());
+app.use(session({
+    secret: 'plantie-supergeheim', // 🔐 geheim halten
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: null, // setzen wir dynamisch
+        httpOnly: true
+    }
+}));
 
 // API Routes
 app.use('/api/auth', loginRoutes);
