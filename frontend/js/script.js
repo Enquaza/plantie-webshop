@@ -13,34 +13,3 @@ fetch('includes/nav-bar.html')
     .then(data => {
         document.getElementById('navbar').innerHTML = data;
     });
-
-function loadContent(page) {
-    let file = '';
-
-    switch (page) {
-        case 'home':
-            file = 'sites/home.html';
-            break;
-        case 'products':
-            file = 'sites/products.html';
-            break;
-        case 'register':
-            file = 'sites/register.html';
-            break;
-        case 'login':
-            file = 'sites/login.html';
-            break;
-        default:
-            file = 'sites/home.html';
-    }
-
-    fetch(file)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('content').innerHTML = data;
-        })
-}
-
-window.onload = () => {
-    loadContent('home');
-};
