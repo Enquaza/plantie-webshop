@@ -47,3 +47,7 @@ app.listen(PORT, () => {
 
 // Backend Server starten: npm run dev
 // Frontend Server: im dir /frontend:  http-server -p 5500
+//
+// Backend Server stoppen:
+// netstat -ano | findstr :3000
+// taskkill /PID 12345 /F

@@ -20,7 +20,7 @@ async function loadProducts(category = '') {
             div.classList.add('product');
             div.innerHTML = `
         <h3>${p.name}</h3>
-        <img src="/images/${p.image}" alt="${p.name}" width="150">
+        <img src="/img/${p.image}" alt="${p.name}" width="150">
         <p>${p.description}</p>
         <p><strong>${p.price.toFixed(2)} €</strong></p>
         <p>⭐️ Bewertung: ${p.rating}/5</p>

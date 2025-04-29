@@ -8,8 +8,3 @@ fetch(`http://${window.location.hostname}:3000/api/test`)
         console.error('Fehler beim Laden:', err);
     });
 
-fetch('includes/nav-bar.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('navbar').innerHTML = data;
-    });

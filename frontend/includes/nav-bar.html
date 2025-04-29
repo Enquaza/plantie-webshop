@@ -1,20 +1,22 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Plantie🌿</a>
+        <a class="navbar-brand" href="/">Plantie🌿</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <button class="nav-link" onclick="window.location.href='sites/index.html'">Home</button>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" onclick="window.location.href='sites/products.html'">Products</button>
+                    <a class="nav-link" href="/sites/products.html">Products</a>
                 </li>
             </ul>
-            <button onclick="window.location.href='sites/register.html'">Register</button>
-            <button onclick="window.location.href='sites/login.html'">Login</button>
+            <div class="d-flex">
+                <a class="btn btn-outline-success me-2" href="/sites/register.html">Register</a>
+                <a class="btn btn-outline-primary" href="/sites/login.html">Login</a>
+            </div>
         </div>
     </div>
 </nav>
