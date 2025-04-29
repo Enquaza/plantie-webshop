@@ -5,9 +5,21 @@ const db = require('../config/db');
 
 // Registrierung
 router.post('/register', async (req, res) => {
-  const { username, email, password, passwordRepeat } = req.body;
+  const {
+    salutation,
+    firstName,
+    lastName,
+    address,
+    zipCode,
+    city,
+    email,
+    username,
+    password,
+    passwordRepeat,
+    paymentInfo
+  } = req.body;
 
-  if (!username || !email || !password || !passwordRepeat) {
+  if (!salutation || !firstName || !lastName || !address || !zipCode || !city || !email || !username || !password || !passwordRepeat || !paymentInfo) {
     return res.status(400).json({ error: "Bitte alle Felder ausfüllen." });
   }
 
@@ -18,11 +30,18 @@ router.post('/register', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const stmt = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`;
-    db.run(stmt, [username, email, hashedPassword], function (err) {
+    const stmt = `INSERT INTO users (
+      salutation, firstName, lastName, address, zipCode, city,
+      email, username, password, paymentInfo
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.run(stmt, [
+      salutation, firstName, lastName, address, zipCode, city,
+      email, username, hashedPassword, paymentInfo
+    ], function (err) {
       if (err) {
         console.error(err.message);
-        return res.status(500).json({ error: "Email existiert bereits oder DB-Fehler" });
+        return res.status(500).json({ error: "DB-Fehler" });
       }
 
       return res.status(201).json({
@@ -98,6 +117,53 @@ router.get('/check', (req, res) => {
     res.json({ loggedIn: false });
   }
 });
+
+// ✏️ Update-Route für Userdaten
+router.post('/update', async (req, res) => {
+  const { address, paymentInfoNew, passwordConfirm } = req.body;
+
+  if (!req.session.user) {
+    return res.status(401).json({ error: "Nicht eingeloggt." });
+  }
+
+  if (!passwordConfirm) {
+    return res.status(400).json({ error: "Passwort muss zur Bestätigung eingegeben werden." });
+  }
+
+  // Holt den aktuellen User aus der Datenbank
+  db.get('SELECT * FROM users WHERE id = ?', [req.session.user.id], async (err, user) => {
+    if (err) {
+      console.error('DB-Fehler:', err.message);
+      return res.status(500).json({ error: "Serverfehler beim Lesen des Users." });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: "Benutzer nicht gefunden." });
+    }
+
+    // Passwort prüfen
+    const match = await bcrypt.compare(passwordConfirm, user.password);
+    if (!match) {
+      return res.status(403).json({ error: "Falsches Passwort." });
+    }
+
+    // Update durchführen
+    const stmt = `
+          UPDATE users
+          SET address = ?, paymentInfo = ?
+          WHERE id = ?
+        `;
+    db.run(stmt, [address || user.address, paymentInfoNew || user.paymentInfo, req.session.user.id], function (err) {
+      if (err) {
+        console.error('DB-Update-Fehler:', err.message);
+        return res.status(500).json({ error: "Fehler beim Aktualisieren der Daten." });
+      }
+
+      return res.json({ message: "Daten erfolgreich aktualisiert!" });
+    });
+  });
+});
+
 
 // Logout-Route
 router.post('/logout', (req, res) => {

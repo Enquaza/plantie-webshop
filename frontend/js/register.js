@@ -8,10 +8,17 @@ form.addEventListener('submit', async (e) => {
     console.log("Submitted!");
 
     const data = {
-        username: form.username.value,
+        salutation: form.salutation.value,
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        address: form.address.value,
+        zipCode: form.zipCode.value,
+        city: form.city.value,
         email: form.email.value,
+        username: form.username.value,
         password: form.password.value,
-        passwordRepeat: form.passwordRepeat.value
+        passwordRepeat: form.passwordRepeat.value,
+        paymentInfo: form.paymentInfo.value
     };
 
     try {

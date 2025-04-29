@@ -15,6 +15,16 @@
 <div id="navbar"></div>
 <h1>Registrierung</h1>
 <form id="registerForm">
+    <select name="salutation" required>
+        <option value="">Anrede wählen</option>
+        <option value="Herr">Herr</option>
+        <option value="Frau">Frau</option>
+        <option value="Divers">Divers</option>
+    </select>
+
+    <input type="text" name="firstName" placeholder="Vorname" required>
+    <input type="text" name="lastName" placeholder="Nachname" required>
+
     <label>Username:</label>
     <input type="text" name="username" required><br>
 
@@ -26,6 +36,11 @@
 
     <label>Passwort wiederholen:</label>
     <input type="password" name="passwordRepeat" required><br>
+
+    <input type="text" name="address" placeholder="Adresse" required>
+    <input type="text" name="zipCode" placeholder="PLZ" pattern="\d{4,5}" required>
+    <input type="text" name="city" placeholder="Ort" required>
+    <input type="text" name="paymentInfo" placeholder="Zahlungsinformationen" required>
 
     <button type="submit">Registrieren</button>
 </form>

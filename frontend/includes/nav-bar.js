@@ -1,4 +1,4 @@
-function loadNavbar() {
+/*function loadNavbar() {
     fetch('/includes/nav-bar.html')
         .then(response => response.text())
         .then(data => {
@@ -85,4 +85,92 @@ function setupDropdownHover() {
 }
 
 // 🚀 Direkt beim Seitenstart Navbar laden
+loadNavbar();*/
+
+// ====================================================
+
+function loadNavbar() {
+    fetch('/includes/nav-bar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+            updateLoginStatus();
+            setupDropdownHover();
+        });
+}
+
+async function updateLoginStatus() {
+    try {
+        const res = await fetch(`http://${window.location.hostname}:3000/api/auth/check`, {
+            credentials: 'include'
+        });
+
+        const status = await res.json();
+        const buttonArea = document.querySelector('.navbar .d-flex'); // Nur die rechte Seite ändern
+
+        if (status.loggedIn) {
+            if (status.user.isAdmin) {
+                // Admin
+                buttonArea.innerHTML = `
+                    <a class="btn btn-outline-primary me-2" href="/sites/admin-products.html">Produkte bearbeiten</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/admin-customers.html">Kunden bearbeiten</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/admin-vouchers.html">Gutscheine verwalten</a>
+                    <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
+                `;
+            } else {
+                // Normale eingeloggte User
+                buttonArea.innerHTML = `
+                    <a class="btn btn-outline-primary me-2" href="/sites/dashboard.html">Mein Konto</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/cart.html">Warenkorb</a>
+                    <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
+                `;
+            }
+        } else {
+            // Nicht eingeloggt (Gast)
+            buttonArea.innerHTML = `
+                <a class="btn btn-outline-success me-2" href="/sites/register.html">Registrieren</a>
+                <a class="btn btn-outline-primary" href="/sites/login.html">Login</a>
+            `;
+        }
+    } catch (err) {
+        console.error('❌ Fehler beim Prüfen des Loginstatus:', err);
+    }
+}
+
+function logout() {
+    fetch(`http://${window.location.hostname}:3000/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+    })
+        .then(() => {
+            window.location.href = '/index.html';
+        });
+}
+
+function setupDropdownHover() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    dropdowns.forEach(dropdown => {
+        let timer;
+
+        dropdown.addEventListener('mouseenter', function () {
+            clearTimeout(timer);
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            const instance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+            instance.show();
+        });
+
+        dropdown.addEventListener('mouseleave', function () {
+            timer = setTimeout(() => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                const instance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+                instance.hide();
+            }, 200);
+        });
+    });
+}
+
+// 🚀 Beim Start Navbar laden
 loadNavbar();
+
+

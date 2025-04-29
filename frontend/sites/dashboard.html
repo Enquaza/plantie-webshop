@@ -19,9 +19,29 @@
   <div id="user-info">
     <p><strong>Benutzername:</strong> <span id="username"></span></p>
     <p><strong>E-Mail:</strong> <span id="email"></span></p>
+    <p><strong>Zahlungsinfo:</strong> <span id="paymentInfo"></span></p>
   </div>
 
-  <button onclick="logout()">Logout</button>
+  <h2>🛠️ Stammdaten bearbeiten</h2>
+  <form id="update-form">
+    <div class="mb-3">
+      <label for="address" class="form-label">Adresse</label>
+      <input type="text" class="form-control" id="address" name="address">
+    </div>
+    <div class="mb-3">
+      <label for="paymentInfoNew" class="form-label">Neue Zahlungsinfo</label>
+      <input type="text" class="form-control" id="paymentInfoNew" name="paymentInfoNew">
+    </div>
+    <div class="mb-3">
+      <label for="passwordConfirm" class="form-label">Passwort zur Bestätigung</label>
+      <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Daten speichern</button>
+  </form>
+
+  <button class="btn btn-danger mt-4" onclick="logout()">Logout</button>
 </main>
+
+
 </body>
 </html>
