@@ -21,26 +21,24 @@ async function updateLoginStatus() {
 
 
             let dropdownMenu = `
-        <div class="dropdown">
-          <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            👋 ${status.user.username}
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/sites/dashboard.html">Mein Konto</a></li>
-      `;
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        👋 ${status.user.username}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/sites/dashboard.html">Mein Konto</a></li>
+            `;
 
-            // ➡️ Admin-Link nur falls Admin
             if (status.user.isAdmin) {
                 dropdownMenu += `
-            <li><a class="dropdown-item" href="/sites/admin-products.html">Produkte verwalten 🛠️</a></li>
-        `;
+                    <li><a class="dropdown-item" href="/sites/admin-products.html">Produkte verwalten 🛠️</a></li>
+            `;
             }
 
-            // ➡️ Logout-Link immer anhängen
             dropdownMenu += `
-            <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
-          </ul>
-        </div>
+                        <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                    </ul>
+                </div>
       `;
 
             // ➡️ Jetzt erst HTML einsetzen
@@ -81,7 +79,7 @@ function setupDropdownHover() {
                 const toggle = dropdown.querySelector('.dropdown-toggle');
                 const instance = bootstrap.Dropdown.getOrCreateInstance(toggle);
                 instance.hide();
-            }, 200); // kleine Verzögerung zum Wechsel ins Menü
+            }, 200);
         });
     });
 }
