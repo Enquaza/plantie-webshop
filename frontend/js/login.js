@@ -6,10 +6,10 @@ form.addEventListener('submit', async (e) => {
 
     const email = form.email.value;
     const password = form.password.value;
-    const remember = form.remember.checked
+    const remember = form.remember.checked;
 
     try {
-        const res = await fetch('http://localhost:3000/api/auth/login', {
+        const res = await fetch(`http://${window.location.hostname}:3000/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -22,6 +22,16 @@ form.addEventListener('submit', async (e) => {
             msg.textContent = `🎉 Login erfolgreich: Willkommen ${data.user.username}`;
             msg.style.color = 'green';
             form.reset();
+
+            // ✅ Sofort Navbar-Loginstatus aktualisieren
+            if (typeof updateLoginStatus === 'function') {
+                updateLoginStatus();
+            }
+
+            setTimeout(() => {
+                window.location.href = '/index.html'; // Optional: Weiterleitung nach kurzer Zeit
+            }, 1000);
+
         } else {
             msg.textContent = `❌ Fehler: ${data.error || 'Unbekannter Fehler'}`;
             msg.style.color = 'red';
@@ -29,5 +39,6 @@ form.addEventListener('submit', async (e) => {
     } catch (err) {
         msg.textContent = '❌ Server nicht erreichbar.';
         msg.style.color = 'red';
+        console.error('Fehler beim Login:', err);
     }
 });

@@ -63,14 +63,16 @@ router.post('/login', async (req, res) => {
     req.session.user = {
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      isAdmin: user.isAdmin
     };
 
     //Cookie setzen, wenn "Login merken" gewählt wurde
     if (remember) {
       req.session.cookie.maxAge = 7 * 24 * 60 * 60 * 1000; // 1 Woche
     } else {
-      req.session.cookie.expires = false; // Session läuft mit dem Browser aus
+      req.session.cookie.expires = false;
+      req.session.cookie.maxAge = null;
     }
 
     return res.status(200).json({
@@ -83,10 +85,32 @@ router.post('/login', async (req, res) => {
 // Check-Route: Ist der User eingeloggt?
 router.get('/check', (req, res) => {
   if (req.session.user) {
-    res.json({ loggedIn: true, user: req.session.user });
+    res.json({
+      loggedIn: true,
+      user: {
+        id: req.session.user.id,
+        username: req.session.user.username,
+        email: req.session.user.email,
+        isAdmin: req.session.user.isAdmin
+      }
+    });
   } else {
     res.json({ loggedIn: false });
   }
+});
+
+// Logout-Route
+router.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.error("Logout-Fehler:", err);
+      return res.status(500).json({ error: "Logout fehlgeschlagen" });
+    }
+
+    // Cookie löschen (optional)
+    res.clearCookie('connect.sid');
+    return res.json({ message: "Logout erfolgreich" });
+  });
 });
 
 module.exports = router;
