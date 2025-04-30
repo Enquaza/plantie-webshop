@@ -42,7 +42,7 @@ You can install them globally using:
 npm install -g http-server nodemon
 ```
 
-### 3. Start the backend and front server
+### 3. Start the backend and frontend server
 
 Use the following to start the backend server:
 
