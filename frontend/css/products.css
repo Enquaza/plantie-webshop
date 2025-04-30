@@ -47,14 +47,3 @@
 .product button:hover {
     background-color: #45a049;
 }
-
-.nav-buttons {
-    margin-top: 20px;
-}
-
-.nav-buttons button {
-    margin-right: 10px;
-    padding: 10px 15px;
-    font-size: 16px;
-}
-

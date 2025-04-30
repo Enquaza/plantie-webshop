@@ -170,7 +170,6 @@ function setupDropdownHover() {
     });
 }
 
-// 🚀 Beim Start Navbar laden
 loadNavbar();
 
 

@@ -2,22 +2,41 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Produkte | Plantie</title>
+  <title>Products | Plantie</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Bundle JS (inkl. Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/headlines.css">
   <link rel="stylesheet" href="/css/products.css">
 </head>
 <body>
-<h1>Produkte 🌷</h1>
-
-<button type="button" onclick="window.location.href='/index.html'">Zurück</button>
-
-<div class="nav-buttons" id="categories">
-  <button onclick="loadProducts()">Alle</button>
-  <button onclick="loadProducts('Zimmerpflanzen')">Zimmerpflanzen</button>
-  <button onclick="loadProducts('Kräuter')">Kräuter</button>
+<div id="navbar"></div>
+<div>
+  <div class="row par-beige">
+    <div class="col-9"><h1>Products🌷</h1></div>
+    <div class="col"></div>
+  </div>
+  <div class="row" style="background: #F5F4F0; padding: 0 0 2% 3%;">
+    <div class="nav-buttons" id="categories">
+      <button onclick="loadProducts()">All</button>
+      <button onclick="loadProducts('Zimmerpflanzen')">Houseplants</button>
+      <button onclick="loadProducts('Kräuter')">Herbs</button>
+      <button type="button" onclick="window.location.href='/index.html'">Go back</button>
+    </div>
+  </div>
+  <div class="row par-green">
+    <div class="col">
+      <div id="product-list"></div>
+    </div>
+  </div>
 </div>
-<br>
-<div id="product-list"></div>
 
+<!-- Scripts -->
 <script src="/js/products.js"></script>
+<script src="/includes/nav-bar.js"></script>
 </body>
 </html>
