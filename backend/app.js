@@ -60,3 +60,5 @@ app.listen(PORT, () => {
 // Backend Server stoppen:
 // netstat -ano | findstr :3000
 // taskkill /PID 12345 /F
+
+// TODO: Products.html -> Nach klick auf warenkorb popup
