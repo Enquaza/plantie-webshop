@@ -20,7 +20,7 @@ form.addEventListener('submit', async (e) => {
 
         if (res.ok) {
             msg.textContent = `🎉 Login erfolgreich: Willkommen ${data.user.username}`;
-            msg.style.color = 'green';
+            msg.style.color = 'purple';
             form.reset();
 
             // ✅ Sofort Navbar-Loginstatus aktualisieren

@@ -73,6 +73,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "User nicht gefunden." });
     }
 
+    if (user.active !== 1) {
+      return res.status(403).json({ error: "Ihr Konto wurde deaktiviert." });
+    }
+
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ error: "Falsches Passwort." });

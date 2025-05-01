@@ -18,6 +18,16 @@
             <p>Lade Warenkorb...</p>
         </div>
 
+        <div class="mb-3">
+            <label for="payment-method" class="form-label">Zahlungsmethode</label>
+            <select id="payment-method" class="form-select">
+                <option value="">Bitte wählen</option>
+                <option value="Rechnung">Rechnung</option>
+                <option value="Kreditkarte">Kreditkarte</option>
+                <option value="PayPal">PayPal</option>
+            </select>
+        </div>
+
         <div class="d-flex justify-content-between mt-4">
             <h4>Gesamtsumme: <span id="total-price">0,00 €</span></h4>
             <button class="btn btn-success" onclick="checkout()">Zur Kasse</button>

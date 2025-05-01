@@ -81,10 +81,19 @@ async function removeFromCart(productId) {
 }
 
 async function checkout() {
+    const paymentMethod = document.getElementById('payment-method').value;
+
+    if (!paymentMethod) {
+        alert("Bitte wählen Sie eine Zahlungsmethode aus.");
+        return;
+    }
+
     try {
         const res = await fetch(`${apiBase}/api/cart/checkout`, {
             method: 'POST',
-            credentials: 'include'
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ paymentMethod })
         });
         const result = await res.json();
         if (result.success) {

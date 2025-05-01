@@ -138,9 +138,14 @@ router.get('/', (req, res) => {
 
 router.post('/checkout', (req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
+    const paymentMethod = req.body.paymentMethod;
 
     if (!userId) {
         return res.status(401).json({ success: false, message: "Bitte einloggen!" });
+    }
+
+    if (!paymentMethod) {
+        return res.status(400).json({ success: false, message: "Zahlungsmethode fehlt." });
     }
 
     // 1. Warenkorb finden
@@ -173,9 +178,9 @@ router.post('/checkout', (req, res) => {
                 return res.status(400).json({ success: false, message: "Warenkorb ist leer." });
             }
 
-            // 3. Bestellung (orders) erstellen
-            const insertOrderSql = `INSERT INTO orders (user_id) VALUES (?)`;
-            db.run(insertOrderSql, [userId], function (err) {
+            // 3. Bestellung (orders) erstellen → Zahlungsmethode speichern!
+            const insertOrderSql = `INSERT INTO orders (user_id, payment_method) VALUES (?, ?)`;
+            db.run(insertOrderSql, [userId, paymentMethod], function (err) {
                 if (err) {
                     console.error("Fehler beim Erstellen der Bestellung:", err.message);
                     return res.status(500).json({ success: false, message: "Serverfehler." });
@@ -197,9 +202,8 @@ router.post('/checkout', (req, res) => {
 
                         itemsProcessed++;
 
-                        // Wenn alle Produkte verarbeitet wurden:
                         if (itemsProcessed === items.length) {
-                            // 5. cart_items löschen (Warenkorb leeren)
+                            // 5. cart_items löschen
                             const deleteCartItemsSql = `DELETE FROM cart_items WHERE cart_id = ?`;
                             db.run(deleteCartItemsSql, [cartId], function (err) {
                                 if (err) {
@@ -216,5 +220,6 @@ router.post('/checkout', (req, res) => {
         });
     });
 });
+
 
 module.exports = router;
