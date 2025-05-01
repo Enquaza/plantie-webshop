@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const loginRoutes = require('./routes/login');
 const productRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
+const adminCustomerRoutes = require('./routes/admin-customers');
 
 const app = express();
 const db = require('./config/db');
@@ -39,7 +40,7 @@ app.use(express.static('frontend'));
 app.use('/api/auth', loginRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
-
+app.use('/api/admin', adminCustomerRoutes);
 
 // Test-Route
 app.get('/api/test', (req, res) => {

@@ -80,8 +80,23 @@ async function removeFromCart(productId) {
     }
 }
 
-function checkout() {
-    // TODO
+async function checkout() {
+    try {
+        const res = await fetch(`${apiBase}/api/cart/checkout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+        const result = await res.json();
+        if (result.success) {
+            alert("Bestellung erfolgreich abgeschlossen!");
+            loadCart();  // Warenkorb neu laden (jetzt leer)
+        } else {
+            alert("Bestellung fehlgeschlagen: " + (result.message || "Unbekannter Fehler"));
+        }
+    } catch (err) {
+        console.error("Fehler beim Checkout:", err);
+        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+    }
 }
 
 // Lade den Warenkorb beim Öffnen der Seite

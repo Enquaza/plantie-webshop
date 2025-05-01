@@ -44,6 +44,11 @@ async function addToCart(productId) {
             credentials: 'include',
             body: JSON.stringify({ productId })
         });
+        if (res.status === 401) {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+            return;
+        }
         const result = await res.json();
         if (result.success) {
             console.log("Erfolgreich hinzugeügt:", productId);

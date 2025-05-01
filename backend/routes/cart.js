@@ -136,4 +136,85 @@ router.get('/', (req, res) => {
     });
 });
 
+router.post('/checkout', (req, res) => {
+    const userId = req.session.user ? req.session.user.id : null;
+
+    if (!userId) {
+        return res.status(401).json({ success: false, message: "Bitte einloggen!" });
+    }
+
+    // 1. Warenkorb finden
+    const findCartSql = `SELECT id FROM carts WHERE user_id = ?`;
+    db.get(findCartSql, [userId], (err, cartRow) => {
+        if (err) {
+            console.error("Fehler beim Suchen des Warenkorbs:", err.message);
+            return res.status(500).json({ success: false, message: "Serverfehler." });
+        }
+
+        if (!cartRow) {
+            return res.status(400).json({ success: false, message: "Kein Warenkorb gefunden." });
+        }
+
+        const cartId = cartRow.id;
+
+        // 2. cart_items abrufen
+        const cartItemsSql = `
+            SELECT product_id, quantity
+            FROM cart_items
+            WHERE cart_id = ?
+        `;
+        db.all(cartItemsSql, [cartId], (err, items) => {
+            if (err) {
+                console.error("Fehler beim Abrufen der Cart Items:", err.message);
+                return res.status(500).json({ success: false, message: "Serverfehler." });
+            }
+
+            if (!items || items.length === 0) {
+                return res.status(400).json({ success: false, message: "Warenkorb ist leer." });
+            }
+
+            // 3. Bestellung (orders) erstellen
+            const insertOrderSql = `INSERT INTO orders (user_id) VALUES (?)`;
+            db.run(insertOrderSql, [userId], function (err) {
+                if (err) {
+                    console.error("Fehler beim Erstellen der Bestellung:", err.message);
+                    return res.status(500).json({ success: false, message: "Serverfehler." });
+                }
+
+                const orderId = this.lastID;
+
+                // 4. order_items einfügen
+                const insertItemSql = `INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)`;
+
+                let itemsProcessed = 0;
+
+                items.forEach(item => {
+                    db.run(insertItemSql, [orderId, item.product_id, item.quantity], function (err) {
+                        if (err) {
+                            console.error("Fehler beim Hinzufügen von Produkten zur Bestellung:", err.message);
+                            return res.status(500).json({ success: false, message: "Serverfehler." });
+                        }
+
+                        itemsProcessed++;
+
+                        // Wenn alle Produkte verarbeitet wurden:
+                        if (itemsProcessed === items.length) {
+                            // 5. cart_items löschen (Warenkorb leeren)
+                            const deleteCartItemsSql = `DELETE FROM cart_items WHERE cart_id = ?`;
+                            db.run(deleteCartItemsSql, [cartId], function (err) {
+                                if (err) {
+                                    console.error("Fehler beim Leeren des Warenkorbs:", err.message);
+                                    return res.status(500).json({ success: false, message: "Serverfehler." });
+                                }
+
+                                res.json({ success: true });
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    });
+});
+
 module.exports = router;
