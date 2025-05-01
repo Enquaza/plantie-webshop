@@ -1,3 +1,4 @@
+// Packages
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,15 +8,16 @@ const cookieParser = require('cookie-parser');
 // Route Const
 const loginRoutes = require('./routes/login');
 const productRoutes = require('./routes/products');
+const cartRoutes = require('./routes/cart');
 
 const app = express();
 const db = require('./config/db');
 
-// Middlewares
-app.use(cors({
+// Middlewares nicht mehr nötig
+/*app.use(cors({
     origin: ['http://localhost:5500', 'http://192.168.0.80:5500'],
     credentials: true
-}));
+}));*/
 app.use(bodyParser.json());
 
 app.use(cookieParser());
@@ -24,14 +26,20 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: null, // setzen wir dynamisch
-        httpOnly: true
+        maxAge: null,
+        httpOnly: true,
+        sameSite: 'lax'
     }
 }));
+
+// aufgrund von port problemen geändert
+app.use(express.static('frontend'));
 
 // API Routes
 app.use('/api/auth', loginRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+
 
 // Test-Route
 app.get('/api/test', (req, res) => {
