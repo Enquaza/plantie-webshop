@@ -138,14 +138,26 @@ async function updateLoginStatus() {
 }
 
 function logout() {
+    console.log("Logout wird ausgeführt...");
+
     fetch(`http://${window.location.hostname}:3000/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
     })
-        .then(() => {
-            window.location.href = '/index.html';
+        .then(res => {
+            console.log("Logout-Antwortstatus:", res.status);
+            if (res.ok) {
+                window.location.href = '/index.html';
+            } else {
+                console.error("Logout fehlgeschlagen:", res.status);
+                alert("Logout fehlgeschlagen. Bitte versuchen Sie es erneut.");
+            }
+        })
+        .catch(err => {
+            console.error("Fehler beim Logout-Fetch:", err);
         });
 }
+
 
 function setupDropdownHover() {
     const dropdowns = document.querySelectorAll('.dropdown');

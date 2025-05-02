@@ -23,8 +23,8 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use(session({
-    secret: 'plantie-supergeheim', // 🔐 geheim halten
-    resave: false,
+    secret: 'plantie-supergeheim',
+    resave: true,
     saveUninitialized: false,
     cookie: {
         maxAge: null,

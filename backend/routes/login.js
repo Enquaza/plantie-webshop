@@ -93,9 +93,11 @@ router.post('/login', async (req, res) => {
     //Cookie setzen, wenn "Login merken" gewählt wurde
     if (remember) {
       req.session.cookie.maxAge = 7 * 24 * 60 * 60 * 1000; // 1 Woche
+      console.log("Session-Cookie maxAge:", req.session.cookie.maxAge);
     } else {
       req.session.cookie.expires = false;
-      req.session.cookie.maxAge = null;
+      req.session.cookie.maxAge = undefined;
+      console.log("Session-Cookie maxAge:", req.session.cookie.maxAge);
     }
 
     return res.status(200).json({
@@ -180,6 +182,7 @@ router.post('/logout', (req, res) => {
     // Cookie löschen (optional)
     res.clearCookie('connect.sid');
     return res.json({ message: "Logout erfolgreich" });
+    console.log("User wurde ausgeloggt. Cookie wird gelöscht.");
   });
 });
 
