@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Produkte verwalten | Admin</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
@@ -17,7 +18,7 @@
             <input type="text" name="category" placeholder="Kategorie" required>
             <input type="number" step="0.01" name="price" placeholder="Preis (€)" required>
             <input type="number" name="rating" min="1" max="5" placeholder="Bewertung (1-5)" required>
-            <input type="text" name="image" placeholder="Bilddateiname (z. B. aloe.jpg)" required>
+            <input type="file" name="imageFile" accept="image/*" required>
 
             <button type="submit">Produkt hinzufügen</button>
         </form>

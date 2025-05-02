@@ -10,7 +10,7 @@ const loginRoutes = require('./routes/login');
 const productRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
 const adminCustomerRoutes = require('./routes/admin-customers');
-
+const ordersRoutes = require('./routes/orders');
 const app = express();
 const db = require('./config/db');
 
@@ -41,6 +41,7 @@ app.use('/api/auth', loginRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/admin', adminCustomerRoutes);
+app.use('/api/orders', ordersRoutes);
 
 // Test-Route
 app.get('/api/test', (req, res) => {
@@ -62,3 +63,4 @@ app.listen(PORT, () => {
 // taskkill /PID 12345 /F
 
 // TODO: Products.html -> Nach klick auf warenkorb popup
+// Hochladen von Bildern in Admin products

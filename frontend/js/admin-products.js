@@ -10,14 +10,14 @@ async function fetchProducts() {
     products.forEach(p => {
         const row = document.createElement('tr');
         row.innerHTML = `
-      <td>${p.name}</td>
-      <td>${p.category}</td>
-      <td>${p.price.toFixed(2)} €</td>
-      <td><img src="/images/${p.image}" width="50"></td>
-      <td>
-        <button onclick="deleteProduct(${p.id})">Löschen 🗑️</button>
-      </td>
-    `;
+            <td>${p.name}</td>
+            <td>${p.category}</td>
+            <td>${p.price.toFixed(2)} €</td>
+            <td><img src="/img/${p.image}" width="50"></td>
+            <td>
+                <button onclick="deleteProduct(${p.id})">Löschen 🗑️</button>
+            </td>
+        `;
         tableBody.appendChild(row);
     });
 }
@@ -25,19 +25,11 @@ async function fetchProducts() {
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const data = {
-        name: form.name.value,
-        description: form.description.value,
-        category: form.category.value,
-        price: parseFloat(form.price.value),
-        rating: parseInt(form.rating.value),
-        image: form.image.value
-    };
+    const formData = new FormData(form);
 
     const res = await fetch(`http://${window.location.hostname}:3000/api/products`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: formData
     });
 
     const result = await res.json();

@@ -1,9 +1,16 @@
 const apiBase = `http://${window.location.hostname}:3000`;
+let searchTerm = '';
 
 async function loadProducts(category = '') {
-    const url = category
-        ? `http://${window.location.hostname}:3000/api/products?category=${encodeURIComponent(category)}`
-        : `http://${window.location.hostname}:3000/api/products`;
+    let url = `${apiBase}/api/products`;
+    const params = new URLSearchParams();
+
+    if (category) params.append('category', category);
+    if (searchTerm) params.append('search', searchTerm);
+
+    if ([...params].length > 0) {
+        url += `?${params.toString()}`;
+    }
 
     try {
         const res = await fetch(url);
@@ -35,6 +42,7 @@ async function loadProducts(category = '') {
     }
 }
 
+
 async function addToCart(productId) {
     console.log("Produkt in den Warenkorb:", productId);
     try {
@@ -57,6 +65,12 @@ async function addToCart(productId) {
         console.error("Fehler beim Hinzufügen zum Warenkorb:", err);
     }
 }
+
+function handleSearch() {
+    searchTerm = document.getElementById('search-input').value;
+    loadProducts();
+}
+
 
 // direkt beim Laden alle Produkte anzeigen
 window.addEventListener('DOMContentLoaded', () => loadProducts());

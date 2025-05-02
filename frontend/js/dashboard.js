@@ -72,3 +72,45 @@ function logout() {
             console.error('Logout-Fehler:', err);
         });
 }
+
+async function loadOrders() {
+    try {
+        const res = await fetch(`http://${window.location.hostname}:3000/api/orders`, {
+            credentials: 'include'
+        });
+        const orders = await res.json();
+
+        const table = document.getElementById('orders-table').querySelector('tbody');
+        table.innerHTML = '';
+
+        if (!orders.length) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td colspan="4">Keine Bestellungen gefunden.</td>`;
+            table.appendChild(row);
+            return;
+        }
+
+        orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${order.id}</td>
+                <td>${new Date(order.created_at).toLocaleDateString()}</td>
+                <td>${order.payment_method}</td>
+                <td><button class="btn btn-primary btn-sm" onclick="viewInvoice(${order.id})">Rechnung anzeigen</button></td>
+            `;
+            table.appendChild(row);
+        });
+    } catch (err) {
+        console.error("Fehler beim Laden der Bestellungen:", err);
+    }
+}
+
+// Bestellungen laden, sobald Seite bereit
+window.addEventListener('DOMContentLoaded', () => {
+    loadOrders();
+});
+
+function viewInvoice(orderId) {
+    window.open(`/api/orders/invoice/${orderId}`, '_blank');
+}
+

@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/headlines.css">
   <link rel="stylesheet" href="/css/products.css">
+
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 </head>
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -37,6 +40,13 @@
     <div class="col-9"><h1>Products🌷</h1></div>
     <div class="col"></div>
   </div>
+
+  <div class="row" style="background: #F5F4F0; padding: 0 0 2% 3%;">
+    <div class="col-md-6">
+      <input type="text" id="search-input" class="form-control" placeholder="Produkte suchen..." oninput="handleSearch()" />
+    </div>
+  </div>
+
   <div class="row" style="background: #F5F4F0; padding: 0 0 2% 3%;">
     <div class="nav-buttons" id="categories">
       <button onclick="loadProducts()">All</button>
