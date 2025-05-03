@@ -8,7 +8,7 @@ async function loadCart() {
         const cart = await res.json();
         renderCart(cart);
     } catch (err) {
-        console.error("Fehler beim Laden des Warenkorbs:", err);
+        console.error("Error loading the cart:", err);
     }
 }
 
@@ -17,7 +17,7 @@ function renderCart(cartItems) {
     container.innerHTML = '';
 
     if (!cartItems || cartItems.length === 0) {
-        container.innerHTML = '<p>Dein Warenkorb ist leer.</p>';
+        container.innerHTML = '<p>Your cart is empty.</p>';
         document.getElementById('total-price').textContent = '0,00 €';
         return;
     }
@@ -28,11 +28,11 @@ function renderCart(cartItems) {
     const thead = `
         <thead>
             <tr>
-                <th>Produkt</th>
-                <th>Preis</th>
-                <th>Menge</th>
-                <th>Summe</th>
-                <th>Aktion</th>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
     `;
@@ -51,7 +51,7 @@ function renderCart(cartItems) {
             <td>${item.price.toFixed(2)} €</td>
             <td>${item.quantity}</td>
             <td>${sum.toFixed(2)} €</td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.productId})">Entfernen</button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.productId})">Remove</button></td>
         `;
         tbody.appendChild(row);
     });
@@ -72,11 +72,11 @@ async function removeFromCart(productId) {
         });
         const result = await res.json();
         if (result.success) {
-            console.log("Produkt entfernt:", productId);
+            console.log("Product removed:", productId);
             loadCart();
         }
     } catch (err) {
-        console.error("Fehler beim Entfernen aus dem Warenkorb:", err);
+        console.error("Error when removing from the cart:", err);
     }
 }
 
@@ -84,7 +84,7 @@ async function checkout() {
     const paymentMethod = document.getElementById('payment-method').value;
 
     if (!paymentMethod) {
-        alert("Bitte wählen Sie eine Zahlungsmethode aus.");
+        alert("Please select a payment method.");
         return;
     }
 
@@ -97,14 +97,14 @@ async function checkout() {
         });
         const result = await res.json();
         if (result.success) {
-            alert("Bestellung erfolgreich abgeschlossen!");
+            alert("Order completed successfully!");
             loadCart();  // Warenkorb neu laden (jetzt leer)
         } else {
-            alert("Bestellung fehlgeschlagen: " + (result.message || "Unbekannter Fehler"));
+            alert("Order failed: " + (result.message || "Unknown error."));
         }
     } catch (err) {
-        console.error("Fehler beim Checkout:", err);
-        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+        console.error("Checkout error:", err);
+        alert("An error has occurred. Please try again.");
     }
 }
 

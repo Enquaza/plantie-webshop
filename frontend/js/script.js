@@ -5,6 +5,5 @@ fetch(`http://${window.location.hostname}:3000/api/test`)
         document.getElementById('backend-msg').textContent = data.message;
     })
     .catch(err => {
-        console.error('Fehler beim Laden:', err);
+        console.error('Loading error:', err);
     });
-

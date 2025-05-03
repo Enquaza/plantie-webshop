@@ -3,6 +3,11 @@ h1 { /* Für Titel */
     font-size: 5rem;
 }
 
+h2{
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
 h4 { /* Überschrift */
     margin: 5px 0px 20px 0px;
     font-size: 1.7rem;

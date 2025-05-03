@@ -2,40 +2,49 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Warenkorb | Plantie</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <title>Cart | Plantie</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Bundle JS (inkl. Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/headlines.css">
 </head>
 <body>
     <div id="navbar"></div>
-
-    <div class="container mt-5">
-        <h1>Dein Warenkorb 🛒</h1>
-
-        <div id="cart-content">
-            <p>Lade Warenkorb...</p>
+    <div>
+        <div class="row par-beige">
+            <div class="col-9"><h1>Your cart 🛒</h1></div>
+            <div class="col"></div>
         </div>
-
-        <div class="mb-3">
-            <label for="payment-method" class="form-label">Zahlungsmethode</label>
-            <select id="payment-method" class="form-select">
-                <option value="">Bitte wählen</option>
-                <option value="Rechnung">Rechnung</option>
-                <option value="Kreditkarte">Kreditkarte</option>
-                <option value="PayPal">PayPal</option>
-            </select>
-        </div>
-
-        <div class="d-flex justify-content-between mt-4">
-            <h4>Gesamtsumme: <span id="total-price">0,00 €</span></h4>
-            <button class="btn btn-success" onclick="checkout()">Zur Kasse</button>
+        <div class="row par-green">
+            <div class="col-9">
+                <div id="cart-content">
+                    <p>Loading cart...</p>
+                </div>
+                <div class="mb-3">
+                    <label for="payment-method" class="form-label">Payment method</label>
+                    <select id="payment-method" class="form-select">
+                        <option value="" disabled>--- Please choose ---</option>
+                        <option value="Rechnung">Invoice</option>
+                        <option value="Kreditkarte">Credit card</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <h4>Total amount: <span id="total-price">0,00 €</span></h4>
+                    <button class="btn btn-success" onclick="checkout()">To checkout</button>
+                </div>
+            </div>
+            <div class="col"></div>
         </div>
     </div>
-
     <div id="footer"></div>
 
+    <!-- Scripts -->
     <script src="/js/cart-manager.js"></script>
     <script src="/includes/nav-bar.js"></script>
     <script src="/includes/footer.js"></script>

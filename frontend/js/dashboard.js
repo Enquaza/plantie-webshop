@@ -9,14 +9,14 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (status.loggedIn) {
             document.getElementById('username').textContent = status.user.username;
             document.getElementById('email').textContent = status.user.email;
-            document.getElementById('paymentInfo').textContent = status.user.paymentInfo || "Noch keine Zahlungsinfo hinterlegt.";
+            document.getElementById('paymentInfo').textContent = status.user.paymentInfo || "No payment information yet.";
         } else {
-            alert('Bitte zuerst einloggen.');
+            alert('Please login first.');
             window.location.href = '/sites/login.html';
         }
     } catch (err) {
-        console.error('❌ Fehler beim Abrufen der Userdaten:', err);
-        alert('Serverfehler. Bitte später versuchen.');
+        console.error('❌ Error retrieving user data:', err);
+        alert('Server error. Please try later.');
     }
 });
 
@@ -30,7 +30,7 @@ updateForm.addEventListener('submit', async (e) => {
     const passwordConfirm = updateForm.passwordConfirm.value;
 
     if (!passwordConfirm) {
-        alert('Bitte Passwort zur Bestätigung eingeben.');
+        alert('Please enter your password to confirm.');
         return;
     }
 
@@ -51,11 +51,11 @@ updateForm.addEventListener('submit', async (e) => {
             }
             updateForm.reset();
         } else {
-            alert('❌ ' + (result.error || 'Fehler beim Speichern'));
+            alert('❌ ' + (result.error || 'Error when saving.'));
         }
     } catch (err) {
-        console.error('❌ Fehler beim Senden:', err);
-        alert('Serverfehler. Bitte später versuchen.');
+        console.error('❌ Error during transmission:', err);
+        alert('Server error. Please try later.');
     }
 });
 
@@ -69,7 +69,7 @@ function logout() {
             window.location.href = '/index.html';
         })
         .catch((err) => {
-            console.error('Logout-Fehler:', err);
+            console.error('Logout-error:', err);
         });
 }
 
@@ -85,7 +85,7 @@ async function loadOrders() {
 
         if (!orders.length) {
             const row = document.createElement('tr');
-            row.innerHTML = `<td colspan="4">Keine Bestellungen gefunden.</td>`;
+            row.innerHTML = `<td colspan="4">No orders found.</td>`;
             table.appendChild(row);
             return;
         }
@@ -93,15 +93,15 @@ async function loadOrders() {
         orders.forEach(order => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${order.id}</td>
+                <th scope="row">${order.id}</th>
                 <td>${new Date(order.created_at).toLocaleDateString()}</td>
                 <td>${order.payment_method}</td>
-                <td><button class="btn btn-primary btn-sm" onclick="viewInvoice(${order.id})">Rechnung anzeigen</button></td>
+                <td><button class="btn btn-primary btn-sm" onclick="viewInvoice(${order.id})">Show invoice</button></td>
             `;
             table.appendChild(row);
         });
     } catch (err) {
-        console.error("Fehler beim Laden der Bestellungen:", err);
+        console.error("Error loading orders:", err);
     }
 }
 
@@ -113,4 +113,3 @@ window.addEventListener('DOMContentLoaded', () => {
 function viewInvoice(orderId) {
     window.open(`/api/orders/invoice/${orderId}`, '_blank');
 }
-

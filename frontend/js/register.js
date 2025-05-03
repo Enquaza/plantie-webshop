@@ -31,16 +31,16 @@ form.addEventListener('submit', async (e) => {
         const result = await res.json();
 
         if (res.ok) {
-            msg.textContent = "🎉 Registrierung erfolgreich!";
+            msg.textContent = "🎉 Registration successful!";
             msg.style.color = "green";
             form.reset();
 
         } else {
-            msg.textContent = "❌ " + (result.error || "Unbekannter Fehler");
+            msg.textContent = "❌ " + (result.error || "Unknown error.");
             msg.style.color = "red";
         }
     } catch (err) {
-        msg.textContent = "❌ Server nicht erreichbar.";
+        msg.textContent = "❌ Server not accessible.";
         msg.style.color = "red";
     }
 });

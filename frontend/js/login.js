@@ -19,7 +19,7 @@ form.addEventListener('submit', async (e) => {
         const data = await res.json();
 
         if (res.ok) {
-            msg.textContent = `🎉 Login erfolgreich: Willkommen ${data.user.username}`;
+            msg.textContent = `🎉 Login successful: Welcome ${data.user.username}`;
             msg.style.color = 'purple';
             form.reset();
 
@@ -33,12 +33,12 @@ form.addEventListener('submit', async (e) => {
             }, 1000);
 
         } else {
-            msg.textContent = `❌ Fehler: ${data.error || 'Unbekannter Fehler'}`;
+            msg.textContent = `❌ Error: ${data.error || 'Unknown error.'}`;
             msg.style.color = 'red';
         }
     } catch (err) {
-        msg.textContent = '❌ Server nicht erreichbar.';
+        msg.textContent = '❌ Server not accessible.';
         msg.style.color = 'red';
-        console.error('Fehler beim Login:', err);
+        console.error('Login error:', err);
     }
 });

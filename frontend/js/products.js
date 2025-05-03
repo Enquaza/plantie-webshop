@@ -20,7 +20,7 @@ async function loadProducts(category = '') {
         container.innerHTML = '';
 
         if (products.length === 0) {
-            container.textContent = 'Keine Produkte gefunden.';
+            container.textContent = 'No products found.';
             return;
         }
 
@@ -33,18 +33,17 @@ async function loadProducts(category = '') {
                 <p>${p.description}</p>
                 <p><strong>${p.price.toFixed(2)} €</strong></p>
                 <p>⭐️ Bewertung: ${p.rating}/5</p>
-                <button onclick="addToCart(${p.id})">In den Warenkorb</button>
+                <button onclick="addToCart(${p.id})" class="btn btn-primary">Add to cart</button>
             `;
             container.appendChild(div);
         });
     } catch (err) {
-        console.error("Fehler beim Laden der Produkte:", err);
+        console.error("Error loading the products:", err);
     }
 }
 
-
 async function addToCart(productId) {
-    console.log("Produkt in den Warenkorb:", productId);
+    console.log("Add product to cart:", productId);
     try {
         const res = await fetch(`${apiBase}/api/cart/add`, {
             method: 'POST',
@@ -59,10 +58,10 @@ async function addToCart(productId) {
         }
         const result = await res.json();
         if (result.success) {
-            console.log("Erfolgreich hinzugeügt:", productId);
+            console.log("Added successfully:", productId);
         }
     } catch (err) {
-        console.error("Fehler beim Hinzufügen zum Warenkorb:", err);
+        console.error("Error adding to cart:", err);
     }
 }
 
@@ -71,6 +70,16 @@ function handleSearch() {
     loadProducts();
 }
 
-
 // direkt beim Laden alle Produkte anzeigen
-window.addEventListener('DOMContentLoaded', () => loadProducts());
+// window.addEventListener('DOMContentLoaded', () => loadProducts());
+// musste das bissi anpassen
+
+window.addEventListener('DOMContentLoaded', () => {
+    const category = getCategory();
+    loadProducts(category);
+});
+
+function getCategory() {
+    const param = new URLSearchParams(window.location.search);
+    return param.get('category') || '';
+}

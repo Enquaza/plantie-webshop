@@ -2,41 +2,62 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Produkte verwalten | Admin</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Manage Products | Admin</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Bundle JS (inkl. Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/headlines.css">
 </head>
 <body>
-<div class="container">
-    <h1>Produktverwaltung</h1>
-
-    <section>
-        <h2>Neues Produkt hinzufügen</h2>
-        <form id="productForm">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="text" name="description" placeholder="Beschreibung" required>
-            <input type="text" name="category" placeholder="Kategorie" required>
-            <input type="number" step="0.01" name="price" placeholder="Preis (€)" required>
-            <input type="number" name="rating" min="1" max="5" placeholder="Bewertung (1-5)" required>
-            <input type="file" name="imageFile" accept="image/*" required>
-
-            <button type="submit">Produkt hinzufügen</button>
+<div id="navbar"></div>
+<div>
+    <div class="row par-beige">
+        <div class="col-9"><h1> Manage products</h1></div>
+        <div class="col"></div>
+    </div>
+    <div class="row par-green">
+        <h2>Add new product</h2>
+        <form id="productForm" class="nav-buttons">
+            <div class="row">
+                <div class="col-2"><input type="text" name="name" placeholder="Name" class="form-control" required></div>
+                <div class="col-2"><input type="text" name="description" placeholder="Description" class="form-control" required></div>
+                <div class="col-1"><input type="text" name="category" placeholder="Category" class="form-control" required></div>
+                <div class="col-1"><input type="number" step="0.01" name="price" placeholder="Price (€)" class="form-control" required></div>
+                <div class="col-1"><input type="number" name="rating" min="1" max="5" placeholder="Rating (1-5)" class="form-control" required></div>
+                <div class="col-2"><input type="file" name="imageFile" accept="image/*" class="form-control" required></div>
+                <div class="col-2"><button type="submit">Add product</button></div>
+            </div>
         </form>
-    </section>
-
-    <section>
-        <h2>Vorhandene Produkte</h2>
-        <table id="productTable">
-            <thead>
-            <tr>
-                <th>Name</th><th>Kategorie</th><th>Preis</th><th>Bild</th><th>Aktion</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </section>
+        <br>
+        <div class="row">
+            <section>
+                <h2>Available products</h2>
+                <table id="productTable" class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+    </div>
 </div>
 
+<!-- Scripts -->
 <script src="/js/admin-products.js"></script>
+<script src="/includes/nav-bar.js"></script>
 </body>
 </html>

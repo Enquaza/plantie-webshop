@@ -12,26 +12,31 @@
 
 .home-cont {
   align-items: center;
-  margin: 5% 0 0 0;
+  margin-top: 5%;
 }
 
-.home-cont div {
+.home-cont button {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 10px 50px;
-  border-radius: 5%;
+  padding-top: 50px;
+  border-radius: 20px;
+  margin: 0 10px;
   background: white;
+  border: 0;
 }
 
-.home-cont div img {
-  width: 60%;
+.home-cont button:hover {
+  background: #f8f8f8;
+}
+
+.home-cont button img {
+  width: 150px;
   height: auto;
-  margin: 20% 0;
+  margin-bottom: 30px;
 }
 
-.home-cont div p {
+.home-cont button p {
   text-align: center;
   font-size: 20px;
   margin-bottom: 15%;
