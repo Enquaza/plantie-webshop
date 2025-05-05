@@ -52,7 +52,7 @@ async function loadOrders(customerId) {
     orders.forEach(o => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <th scope="row">${o.orderId}</th>
+            <th scope="row">PL-${o.orderId.toString().padStart(5, '0')}</th> 
             <td>${o.productName}</td>
             <td>${o.quantity}</td>
             <td><button class="btn btn-danger btn-sm" onclick="removeProductFromOrder(${o.orderId}, ${o.productId})">Remove</button></td>

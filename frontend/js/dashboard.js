@@ -93,7 +93,7 @@ async function loadOrders() {
         orders.forEach(order => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <th scope="row">${order.id}</th>
+                <th scope="row">PL-${order.id.toString().padStart(5, '0')}</th>
                 <td>${new Date(order.created_at).toLocaleDateString()}</td>
                 <td>${order.payment_method}</td>
                 <td><button class="btn btn-primary btn-sm" onclick="viewInvoice(${order.id})">Show invoice</button></td>
