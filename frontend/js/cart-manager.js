@@ -17,7 +17,7 @@ function renderCart(cartItems) {
     container.innerHTML = '';
 
     if (!cartItems || cartItems.length === 0) {
-        container.innerHTML = '<p>Your cart is empty.</p>';
+        container.innerHTML = '<p>Your cart is empty.❌</p>';
         document.getElementById('total-price').textContent = '0,00 €';
         return;
     }

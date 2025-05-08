@@ -38,7 +38,14 @@
                 <input type="text" name="address" placeholder="Address" class="form-control" id="address" required>
                 <input type="text" name="zipCode" placeholder="ZIP" pattern="\d{4,5}" class="form-control" required>
                 <input type="text" name="city" placeholder="City" class="form-control" required>
-                <input type="text" name="paymentInfo" placeholder="Payment info" class="form-control" required>
+                <br>
+                <label for="paymentInfo" class="form-label">Payment method:</label>
+                <select id="paymentInfo" name="paymentInfo" class="form-select" required>
+                    <option value="" disabled selected>--- Please choose ---</option>
+                    <option value="Rechnung">Invoice</option>
+                    <option value="Kreditkarte">Credit card</option>
+                    <option value="PayPal">PayPal</option>
+                </select>
                 <br>
                 <label for="username" class="form-label">Username:</label>
                 <input type="text" name="username" class="form-control" id="username" required>
