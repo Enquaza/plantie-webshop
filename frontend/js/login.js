@@ -4,7 +4,7 @@ const msg = document.getElementById('msg');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = form.email.value;
+    const identifier = form.identifier.value;
     const password = form.password.value;
     const remember = form.remember.checked;
 
@@ -13,7 +13,7 @@ form.addEventListener('submit', async (e) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ email, password, remember })
+            body: JSON.stringify({ identifier, password, remember })
         });
 
         const data = await res.json();

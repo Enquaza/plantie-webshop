@@ -57,13 +57,13 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
-  const { email, password, remember } = req.body;
+  const { identifier, password, remember } = req.body;
 
   //debug
   console.log("Anfrage-Daten:", req.body);
-  const sql = `SELECT * FROM users WHERE email = ?`;
+  const sql = `SELECT * FROM users WHERE email = ? OR username = ?`;
 
-  db.get(sql, [email], async (err, user) => {
+  db.get(sql, [identifier, identifier], async (err, user) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: "Datenbankfehler beim Login." });
@@ -101,7 +101,7 @@ router.post('/login', async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Login erfolgreich!",
+      message: "Login erfolgreich für: " + identifier + "!",
       user: { id: user.id, username: user.username, email: user.email }
     });
   });

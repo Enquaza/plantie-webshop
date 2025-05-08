@@ -59,6 +59,7 @@ async function addToCart(productId) {
         const result = await res.json();
         if (result.success) {
             console.log("Added successfully:", productId);
+            showCartAlert("Produkt wurde dem Warenkorb hinzugefügt!");
         }
     } catch (err) {
         console.error("Error adding to cart:", err);
@@ -83,3 +84,21 @@ function getCategory() {
     const param = new URLSearchParams(window.location.search);
     return param.get('category') || '';
 }
+
+function showCartAlert(message) {
+    const container = document.getElementById('cart-alert-container');
+    container.innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            ${message}
+        </div>
+    `;
+
+    setTimeout(() => {
+        const alertElement = container.querySelector('.alert');
+        if (alertElement) {
+            const alert = bootstrap.Alert.getOrCreateInstance(alertElement);
+            alert.close();
+        }
+    }, 1800);
+}
+
