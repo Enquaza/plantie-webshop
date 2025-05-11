@@ -45,7 +45,7 @@ updateForm.addEventListener('submit', async (e) => {
         const result = await res.json();
 
         if (res.ok) {
-            alert('✅ Daten erfolgreich aktualisiert!');
+            alert('✅ Data successfully updated!');
             if (paymentInfoNew) {
                 document.getElementById('paymentInfo').textContent = paymentInfoNew;
             }

@@ -1,11 +1,12 @@
 const apiBase = `http://${window.location.hostname}:3000`;
 let searchTerm = '';
 
-async function loadProducts(category = '') {
+async function loadProducts({ category = '', level = '' } = {}) {
     let url = `${apiBase}/api/products`;
     const params = new URLSearchParams();
 
     if (category) params.append('category', category);
+    if (level) params.append('level', level);
     if (searchTerm) params.append('search', searchTerm);
 
     if ([...params].length > 0) {
@@ -59,7 +60,7 @@ async function addToCart(productId) {
         const result = await res.json();
         if (result.success) {
             console.log("Added successfully:", productId);
-            showCartAlert("Produkt wurde dem Warenkorb hinzugefügt!");
+            showCartAlert("Product has been added to the cart!");
         }
     } catch (err) {
         console.error("Error adding to cart:", err);
@@ -69,20 +70,6 @@ async function addToCart(productId) {
 function handleSearch() {
     searchTerm = document.getElementById('search-input').value;
     loadProducts();
-}
-
-// direkt beim Laden alle Produkte anzeigen
-// window.addEventListener('DOMContentLoaded', () => loadProducts());
-// musste das bissi anpassen
-
-window.addEventListener('DOMContentLoaded', () => {
-    const category = getCategory();
-    loadProducts(category);
-});
-
-function getCategory() {
-    const param = new URLSearchParams(window.location.search);
-    return param.get('category') || '';
 }
 
 function showCartAlert(message) {
@@ -102,3 +89,23 @@ function showCartAlert(message) {
     }, 1800);
 }
 
+// direkt beim Laden alle Produkte anzeigen
+// window.addEventListener('DOMContentLoaded', () => loadProducts());
+// musste das bissi anpassen
+
+window.addEventListener('DOMContentLoaded', () => {
+    const category = getCategory();
+    const level = getLevel();
+
+    loadProducts({ category, level });
+});
+
+function getCategory() {
+    const param = new URLSearchParams(window.location.search);
+    return param.get('category') || '';
+}
+
+function getLevel() {
+    const param = new URLSearchParams(window.location.search);
+    return param.get('level') || '';
+}

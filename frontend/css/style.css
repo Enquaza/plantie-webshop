@@ -1,3 +1,8 @@
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .nav-buttons {
   margin-top: 20px;
 }
@@ -8,6 +13,10 @@
   background: #FFFFFF;
   border-radius: 6px;
   border: 1px solid #BDDBC3;
+}
+
+.nav-buttons button:hover {
+  background: #f8f8f8;
 }
 
 .home-cont {
@@ -49,4 +58,8 @@
 .par-beige {
   background: #F5F4F0;
   padding: 3%;
+}
+
+tr {
+  border-radius: 20px;
 }

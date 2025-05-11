@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/headlines.css">
+    <link rel="stylesheet" href="/css/tables.css">
 </head>
 <body>
 <div id="navbar"></div>
@@ -23,27 +24,46 @@
     </div>
     <div class="row par-green">
         <h2>Add new product</h2>
-        <form id="productForm" class="nav-buttons">
+        <form id="productForm">
             <div class="row">
                 <div class="col-2"><input type="text" name="name" placeholder="Name" class="form-control" required></div>
                 <div class="col-2"><input type="text" name="description" placeholder="Description" class="form-control" required></div>
-                <div class="col-1"><input type="text" name="category" placeholder="Category" class="form-control" required></div>
+                <div class="col-1">
+                    <select type="text" name="category" class="form-select" aria-label="Category" required>
+                        <option selected disabled>Category</option>
+                        <option value="Houseplants">Houseplant</option>
+                        <option value="Herbs">Herbs</option>
+                        <option value="Accessoires">Accessoires</option>
+                    </select>
+                </div>
+                <div class="col-1">
+                    <select type="text" name="category" class="form-select" aria-label="Level" required>
+                        <option selected disabled>Level</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                        <option value="None">None</option>
+                    </select>
+                </div>
                 <div class="col-1"><input type="number" step="0.01" name="price" placeholder="Price (€)" class="form-control" required></div>
                 <div class="col-1"><input type="number" name="rating" min="1" max="5" placeholder="Rating (1-5)" class="form-control" required></div>
                 <div class="col-2"><input type="file" name="imageFile" accept="image/*" class="form-control" required></div>
-                <div class="col-2"><button type="submit">Add product</button></div>
+                <div class="col-2"><button type="submit" class="btn btn-primary">Add product</button></div>
             </div>
         </form>
         <br>
+        <br>
+        <br>
         <div class="row">
-            <section>
-                <h2>Available products</h2>
+            <h2>Available products</h2>
+            <div class="scrollable-table">
                 <table id="productTable" class="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Level</th>
                         <th scope="col">Price</th>
                         <th scope="col">Image</th>
                         <th scope="col">Action</th>
@@ -51,7 +71,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-            </section>
+            </div>
         </div>
     </div>
 </div>

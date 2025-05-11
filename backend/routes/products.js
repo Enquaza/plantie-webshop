@@ -19,6 +19,7 @@ const upload = multer({ storage: storage });
 // Alle Produkte oder nach Kategorie filtern
 router.get('/', (req, res) => {
     const category = req.query.category;
+    const level = req.query.level;
     const search = req.query.search;
 
     let sql = `SELECT * FROM products WHERE 1=1`;
@@ -27,6 +28,11 @@ router.get('/', (req, res) => {
     if (category) {
         sql += ` AND category = ?`;
         params.push(category);
+    }
+
+    if (level) {
+        sql += ` AND level = ?`;
+        params.push(level);
     }
 
     if (search) {

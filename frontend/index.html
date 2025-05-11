@@ -36,17 +36,17 @@
         <h4>Ready to green up your space?</h4>
         <p>Discover beautiful plants and accessories to bring nature into your home. Start your green journey here!</p>
         <div class="row home-cont">
-          <button class="col">
+          <button class="col" onclick="goToCategory('Houseplants')">
             <img src="img/plant.png" alt="icon">
-            <p>Plants 🌿</p>
+            <p>Houseplants 🪻</p>
           </button>
-          <button class="col">
+          <button class="col" onclick="goToCategory('Herbs')">
             <img src="img/plant.png" alt="icon">
-            <p>Accessories 🛠️</p>
+            <p>Herbs 🌿</p>
           </button>
-          <button class="col">
+          <button class="col" onclick="goToCategory('Accessoires')">
             <img src="img/plant.png" alt="icon">
-            <p>Plant Care 🧴</p>
+            <p>Accessoires 🛠️</p>
           </button>
         </div>
       </section>
@@ -60,15 +60,15 @@
         <p>Not sure where to begin? Let’s kickstart your plant journey with the perfect first step!</p>
         <p></p>
         <div class="row home-cont">
-          <button class="col" onclick="goToCategory('Kräuter')">
+          <button class="col" onclick="goToLevel('Easy')">
             <img src="img/plant.png" alt="icon">
             <p>Low Effort, Big Reward 🌱</p>
           </button>
-          <button class="col">
+          <button class="col" onclick="goToLevel('Medium')">
             <img src="img/plant.png" alt="icon">
             <p>Needs a Little Love 🌿</p>
           </button>
-          <button class="col">
+          <button class="col" onclick="goToLevel('Hard')">
             <img src="img/plant.png" alt="icon">
             <p>True Plant Passion 🌵</p>
           </button>

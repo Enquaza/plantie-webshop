@@ -13,6 +13,7 @@ async function fetchProducts() {
             <th scope="row">${p.id}</th>
             <td>${p.name}</td>
             <td>${p.category}</td>
+            <td>${p.level}</td>
             <td>${p.price.toFixed(2)} €</td>
             <td><img src="/img/${p.image}" width="50"></td>
             <td>

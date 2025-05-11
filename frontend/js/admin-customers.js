@@ -78,4 +78,20 @@ async function removeProductFromOrder(orderId, productId) {
     }
 }
 
+function searchCustomers() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.getElementById('customer-table').querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const username = row.children[1].textContent.toLowerCase();
+        const email = row.children[2].textContent.toLowerCase();
+
+        if (username.includes(query) || email.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
 window.addEventListener('DOMContentLoaded', loadCustomers);

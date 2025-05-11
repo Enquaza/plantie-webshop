@@ -12,6 +12,8 @@
 
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/headlines.css">
+  <link rel="stylesheet" href="/css/tables.css">
+  <link rel="stylesheet" href="/css/admin-customers.css">
 </head>
 <body>
 <div id="navbar"></div>
@@ -21,38 +23,52 @@
     <div class="col"></div>
   </div>
   <div class="row par-green">
+    <h2>Search customers</h2>
     <div class="row">
-      <h2>Customers</h2>
-      <div class="col">
-        <table class="table table-striped" id="customer-table">
-          <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">E-Mail</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="col-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search username or email...">
+      </div>
+      <div class="col-2">
+        <button class="btn btn-primary" type="button" onclick="searchCustomers()">Search</button>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <h2>Customer orders</h2>
-        <table class="table table-striped" id="order-table">
-          <thead>
-          <tr>
-            <th scope="col">Order no.</th>
-            <th scope="col">Product</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Actions</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <h2>Customers</h2>
+        <div class="scrollable-table">
+          <table class="table table-striped" id="customer-table">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">E-Mail</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
+      <div class="col">
+        <h2>Customer orders</h2>
+        <div class="scrollable-table">
+          <table class="table table-striped" id="order-table">
+            <thead>
+            <tr>
+              <th scope="col">Order no.</th>
+              <th scope="col">Product</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
     </div>
   </div>
 </div>

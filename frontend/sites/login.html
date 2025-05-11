@@ -24,17 +24,15 @@
   <div class="row par-green">
     <form id="loginForm">
       <div class="col-4">
-        <input type="text" id="identifier" name="identifier" placeholder="E-Mail oder Benutzername" class="form-control" required>
+        <input type="text" id="identifier" name="identifier" placeholder="Email or username" class="form-control" required>
         <br>
         <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
         <br>
-        <input type="checkbox" name="remember"> Login merken
+        <input type="checkbox" name="remember"> Remember login
         <p>Don't have an account yet? <a href="/sites/register.html">Register here</a></p>
+        <button class="btn btn-primary" type="submit">Submit</button>
         <div class="nav-buttons">
-          <button type="submit">Submit</button>
-          <button type="button" onclick="window.location.href='/index.html'">
-            Go back to home
-          </button>
+          <button type="button" onclick="window.location.href='/index.html'">Go back to home</button>
         </div>
         <br>
         <p id="msg"></p>

@@ -112,49 +112,48 @@ async function updateLoginStatus() {
             if (status.user.isAdmin) {
                 // Admin
                 buttonArea.innerHTML = `
-                    <a class="btn btn-outline-primary me-2" href="/sites/admin-products.html">Produkte bearbeiten</a>
-                    <a class="btn btn-outline-primary me-2" href="/sites/admin-customers.html">Kunden bearbeiten</a>
-                    <a class="btn btn-outline-primary me-2" href="/sites/admin-vouchers.html">Gutscheine verwalten</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/admin-products.html">Manage products</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/admin-customers.html">Manage customers</a>
                     <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
                 `;
             } else {
                 // Normale eingeloggte User
                 buttonArea.innerHTML = `
-                    <a class="btn btn-outline-primary me-2" href="/sites/dashboard.html">Mein Konto</a>
-                    <a class="btn btn-outline-primary me-2" href="/sites/cart.html">Warenkorb</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/dashboard.html">My account</a>
+                    <a class="btn btn-outline-primary me-2" href="/sites/cart.html">Cart</a>
                     <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
                 `;
             }
         } else {
             // Nicht eingeloggt (Gast)
             buttonArea.innerHTML = `
-                <a class="btn btn-outline-success me-2" href="/sites/register.html">Registrieren</a>
+                <a class="btn btn-outline-success me-2" href="/sites/register.html">Register</a>
                 <a class="btn btn-outline-primary" href="/sites/login.html">Login</a>
             `;
         }
     } catch (err) {
-        console.error('❌ Fehler beim Prüfen des Loginstatus:', err);
+        console.error('❌ Error checking the login status:', err);
     }
 }
 
 function logout() {
-    console.log("Logout wird ausgeführt...");
+    console.log("Logout is being executed...");
 
     fetch(`http://${window.location.hostname}:3000/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
     })
         .then(res => {
-            console.log("Logout-Antwortstatus:", res.status);
+            console.log("Logout response status:", res.status);
             if (res.ok) {
                 window.location.href = '/index.html';
             } else {
-                console.error("Logout fehlgeschlagen:", res.status);
-                alert("Logout fehlgeschlagen. Bitte versuchen Sie es erneut.");
+                console.error("Logout failed:", res.status);
+                alert("Logout failed. Please try again.");
             }
         })
         .catch(err => {
-            console.error("Fehler beim Logout-Fetch:", err);
+            console.error("Error during logout fetch:", err);
         });
 }
 
