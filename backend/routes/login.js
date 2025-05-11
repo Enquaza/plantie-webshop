@@ -87,7 +87,9 @@ router.post('/login', async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
+      paymentInfo: user.paymentInfo,
+      address: user.address
     };
 
     //Cookie setzen, wenn "Login merken" gewählt wurde
@@ -116,7 +118,9 @@ router.get('/check', (req, res) => {
         id: req.session.user.id,
         username: req.session.user.username,
         email: req.session.user.email,
-        isAdmin: req.session.user.isAdmin
+        isAdmin: req.session.user.isAdmin,
+        paymentInfo: req.session.user.paymentInfo || null,
+        address: req.session.user.address || null
       }
     });
   } else {
@@ -164,6 +168,9 @@ router.post('/update', async (req, res) => {
         console.error('DB-Update-Fehler:', err.message);
         return res.status(500).json({ error: "Fehler beim Aktualisieren der Daten." });
       }
+
+      req.session.user.paymentInfo = paymentInfoNew || user.paymentInfo;
+      req.session.user.address = address || user.address;
 
       return res.json({ message: "Daten erfolgreich aktualisiert!" });
     });

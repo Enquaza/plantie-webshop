@@ -108,5 +108,30 @@ async function checkout() {
     }
 }
 
+// Anpassung der Payment-Methode, falls vorhanden
+async function preselectPaymentMethod() {
+    try {
+        const res = await fetch(`${apiBase}/api/auth/check`, {
+            credentials: 'include'
+        });
+        const data = await res.json();
+
+        if (data.loggedIn && data.user.paymentInfo) {
+            const select = document.getElementById('payment-method');
+            for (let option of select.options) {
+                if (option.value === data.user.paymentInfo) {
+                    option.selected = true;
+                    break;
+                }
+            }
+        }
+    } catch (err) {
+        console.error("❌ Error when preselecting the payment method:", err);
+    }
+}
+
 // Lade den Warenkorb beim Öffnen der Seite
-window.addEventListener('DOMContentLoaded', loadCart);
+window.addEventListener('DOMContentLoaded', () => {
+    loadCart();
+    preselectPaymentMethod();
+});

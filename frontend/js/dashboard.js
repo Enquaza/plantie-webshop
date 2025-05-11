@@ -46,10 +46,7 @@ updateForm.addEventListener('submit', async (e) => {
 
         if (res.ok) {
             alert('✅ Data successfully updated!');
-            if (paymentInfoNew) {
-                document.getElementById('paymentInfo').textContent = paymentInfoNew;
-            }
-            updateForm.reset();
+            window.location.reload();
         } else {
             alert('❌ ' + (result.error || 'Error when saving.'));
         }
