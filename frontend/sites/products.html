@@ -44,9 +44,9 @@
     </div>
     <div class="nav-buttons" id="categories">
       <button onclick="loadProducts()">All</button>
-      <button onclick="loadProducts('Houseplants')">Houseplants</button>
-      <button onclick="loadProducts('Herbs')">Herbs</button>
-      <button onclick="loadProducts('Accessoires')">Accessoires</button>
+      <button onclick="loadProducts({ category: 'Houseplants' })">Houseplants</button>
+      <button onclick="loadProducts({ category: 'Herbs' })">Herbs</button>
+      <button onclick="loadProducts({ category: 'Accessoires' })">Accessoires</button>
       <button type="button" onclick="window.location.href='/index.html'">Go back</button>
       <!-- Success-Alert Container -->
       <div id="cart-alert-container" style="margin-top: 20px;"></div>
