@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Pfad zur SQLite-Datei (wird automatisch erstellt, wenn nicht vorhanden)
+// Pfad zur SQLite-Datei
 const dbPath = path.resolve(__dirname, 'plantie.db');
 
 // Verbindung zur Datenbank herstellen
@@ -26,8 +26,6 @@ db.serialize(() => {
   `, (err) => {
         if (err) {
             console.error("Fehler beim Erstellen der Tabelle:", err.message);
-        } else {
-            console.log("Tabelle 'users' bereit.");
         }
     });
     // Produkt-Tabelle
@@ -44,8 +42,6 @@ db.serialize(() => {
   `, (err) => {
         if (err) {
             console.error("Fehler beim Erstellen der Tabelle 'products':", err.message);
-        } else {
-            console.log("Tabelle 'products' bereit.");
         }
     });
 });
