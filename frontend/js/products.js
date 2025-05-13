@@ -61,6 +61,7 @@ async function addToCart(productId) {
         if (result.success) {
             console.log("Added successfully:", productId);
             showCartAlert("Product has been added to the cart!");
+            updateCartCount();
         }
     } catch (err) {
         console.error("Error adding to cart:", err);
