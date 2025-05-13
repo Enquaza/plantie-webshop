@@ -221,5 +221,58 @@ router.post('/checkout', (req, res) => {
     });
 });
 
+// Menge ändern (+1 oder -1)
+router.post('/update', (req, res) => {
+    const { productId, delta } = req.body;
+    const userId = req.session.user ? req.session.user.id : null;
+
+    if (!userId) {
+        return res.status(401).json({ error: "Please log in first!" });
+    }
+
+    // Warenkorb-ID ermitteln
+    const findCartSql = `SELECT id FROM carts WHERE user_id = ?`;
+    db.get(findCartSql, [userId], (err, cartRow) => {
+        if (err || !cartRow) {
+            console.error("Error getting the cart: ", err?.message);
+            return res.status(500).json({ error: "Server error or nonexistent cart." });
+        }
+
+        const cartId = cartRow.id;
+
+        // Schritt 2: Aktuelle Menge abrufen
+        const getItemSql = `SELECT id, quantity FROM cart_items WHERE cart_id = ? AND product_id = ?`;
+        db.get(getItemSql, [cartId, productId], (err, item) => {
+            if (err || !item) {
+                return res.status(400).json({ error: "Product not found in cart." });
+            }
+
+            const newQty = item.quantity + delta;
+
+            if (newQty < 1) {
+                // Produkt entfernen
+                const deleteSql = `DELETE FROM cart_items WHERE id = ?`;
+                db.run(deleteSql, [item.id], function (err) {
+                    if (err) {
+                        console.error("Error deleting", err.message);
+                        return res.status(500).json({ error: "Error deleting" });
+                    }
+                    return res.json({ success: true, removed: true });
+                });
+            } else {
+                // Menge aktualisieren
+                const updateSql = `UPDATE cart_items SET quantity = ? WHERE id = ?`;
+                db.run(updateSql, [newQty, item.id], function (err) {
+                    if (err) {
+                        console.error("Error updating", err.message);
+                        return res.status(500).json({ error: "Error updating" });
+                    }
+                    return res.json({ success: true });
+                });
+            }
+        });
+    });
+});
+
 
 module.exports = router;

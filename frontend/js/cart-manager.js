@@ -49,7 +49,13 @@ function renderCart(cartItems) {
         row.innerHTML = `
             <td>${item.name}</td>
             <td>${item.price.toFixed(2)} €</td>
-            <td>${item.quantity}</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="changeQuantity(${item.productId}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="changeQuantity(${item.productId}, 1)">+</button>
+                </div>
+            </td>
             <td>${sum.toFixed(2)} €</td>
             <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.productId})">Remove</button></td>
         `;
@@ -129,6 +135,28 @@ async function preselectPaymentMethod() {
         console.error("❌ Error when preselecting the payment method:", err);
     }
 }
+
+async function changeQuantity(productId, delta) {
+    try {
+        const res = await fetch(`${apiBase}/api/cart/update`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ productId, delta })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+            loadCart();
+            updateCartCount();
+        } else {
+            alert(result.error || "Update failed.");
+        }
+    } catch (err) {
+        console.error("Error changing quantity", err);
+    }
+}
+
 
 // Lade den Warenkorb beim Öffnen der Seite
 window.addEventListener('DOMContentLoaded', () => {
