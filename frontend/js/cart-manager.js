@@ -80,6 +80,7 @@ async function removeFromCart(productId) {
         if (result.success) {
             console.log("Product removed:", productId);
             loadCart();
+            updateCartCount();
         }
     } catch (err) {
         console.error("Error when removing from the cart:", err);
