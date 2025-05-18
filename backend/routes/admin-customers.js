@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-// Admin-Check Middleware (du kannst auch direkt req.session.user.isAdmin prüfen)
+// Admin-Check
 function isAdmin(req, res, next) {
     if (!req.session.user || !req.session.user.isAdmin) {
         return res.status(403).json({ error: "Not authorized." });

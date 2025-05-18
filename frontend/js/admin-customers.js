@@ -42,6 +42,7 @@ async function toggleCustomer(customerId, isActive) {
 
 async function loadOrders(customerId) {
     const res = await fetch(`${apiBase}/api/admin/customers/${customerId}/orders`, {
+        method: 'GET',
         credentials: 'include'
     });
     const orders = await res.json();

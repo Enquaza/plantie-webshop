@@ -73,7 +73,7 @@ function logout() {
 }
 
 
-function setupDropdownHover() {
+/* function setupDropdownHover() {
     const dropdowns = document.querySelectorAll('.dropdown');
 
     dropdowns.forEach(dropdown => {
@@ -94,7 +94,7 @@ function setupDropdownHover() {
             }, 200);
         });
     });
-}
+}*/
 
 async function updateCartCount() {
     try {
@@ -114,7 +114,4 @@ async function updateCartCount() {
     }
 }
 
-
 loadNavbar();
-
-
