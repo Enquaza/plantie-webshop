@@ -50,11 +50,12 @@ router.get('/', (req, res) => {
     });
 });
 
+// Add a new product
 router.post('/', upload.single('imageFile'), (req, res) => {
     const { name, description, category, level, price, rating } = req.body;
     const image = req.file ? req.file.filename : null;
 
-    if (!name || !category || !level || !price || !rating || !image) {
+    if (!name || !category || !price || !rating || !image) {
         return res.status(400).json({ message: "All fields must be filled out." });
     }
 
@@ -71,6 +72,24 @@ router.post('/', upload.single('imageFile'), (req, res) => {
         }
 
         res.json({ success: true, message: "Product successfully added." });
+    });
+});
+
+// Delete Product
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.run(`DELETE FROM products WHERE id = ?`, [id], function (err) {
+        if (err) {
+            console.error("Error deleting:", err.message);
+            return res.status(500).json({ message: "Error deleting product." });
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).json({ message: "Product not found." });
+        }
+
+        res.json({ success: true });
     });
 });
 
