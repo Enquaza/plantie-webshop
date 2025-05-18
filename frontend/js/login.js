@@ -23,7 +23,7 @@ form.addEventListener('submit', async (e) => {
             msg.style.color = 'purple';
             form.reset();
 
-            // ✅ Sofort Navbar-Loginstatus aktualisieren
+            // Navbar-Loginstatus aktualisieren
             if (typeof updateLoginStatus === 'function') {
                 updateLoginStatus();
             }

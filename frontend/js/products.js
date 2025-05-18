@@ -90,10 +90,6 @@ function showCartAlert(message) {
     }, 1800);
 }
 
-// direkt beim Laden alle Produkte anzeigen
-// window.addEventListener('DOMContentLoaded', () => loadProducts());
-// musste das bissi anpassen
-
 window.addEventListener('DOMContentLoaded', () => {
     const category = getCategory();
     const level = getLevel();

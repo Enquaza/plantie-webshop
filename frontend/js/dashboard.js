@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// ✏️ Formular-Submit für Stammdaten-Update behandeln
+// Formular-Submit für Stammdaten Update
 const updateForm = document.getElementById('update-form');
 updateForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ updateForm.addEventListener('submit', async (e) => {
     }
 });
 
-// 🔴 Logout-Button Handling (optional falls vorhanden)
+// Logout
 function logout() {
     fetch(`http://${window.location.hostname}:3000/api/auth/logout`, {
         method: 'POST',
