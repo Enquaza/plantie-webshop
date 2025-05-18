@@ -43,34 +43,34 @@ router.get('/', (req, res) => {
 
     db.all(sql, params, (err, rows) => {
         if (err) {
-            console.error("Fehler beim Abrufen der Produkte:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error when retrieving the products:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
         res.json(rows);
     });
 });
 
 router.post('/', upload.single('imageFile'), (req, res) => {
-    const { name, description, category, price, rating } = req.body;
+    const { name, description, category, level, price, rating } = req.body;
     const image = req.file ? req.file.filename : null;
 
-    if (!name || !category || !price || !rating || !image) {
-        return res.status(400).json({ message: "Alle Felder müssen ausgefüllt werden." });
+    if (!name || !category || !level || !price || !rating || !image) {
+        return res.status(400).json({ message: "All fields must be filled out." });
     }
 
     const sql = `
-        INSERT INTO products (name, description, category, price, rating, image)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO products (name, description, category, level, price, rating, image)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const params = [name, description, category, price, rating, image];
+    const params = [name, description, category, level, price, rating, image];
 
     db.run(sql, params, function (err) {
         if (err) {
-            console.error("Fehler beim Hinzufügen des Produkts:", err.message);
-            return res.status(500).json({ message: "Datenbankfehler." });
+            console.error("Error when adding the product:", err.message);
+            return res.status(500).json({ message: "Database error." });
         }
 
-        res.json({ success: true, message: "Produkt erfolgreich hinzugefügt." });
+        res.json({ success: true, message: "Product successfully added." });
     });
 });
 
