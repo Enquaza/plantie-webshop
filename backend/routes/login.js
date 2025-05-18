@@ -20,11 +20,11 @@ router.post('/register', async (req, res) => {
   } = req.body;
 
   if (!salutation || !firstName || !lastName || !address || !zipCode || !city || !email || !username || !password || !passwordRepeat || !paymentInfo) {
-    return res.status(400).json({ error: "Bitte alle Felder ausfüllen." });
+    return res.status(400).json({ error: "Please fill in all fields." });
   }
 
   if (password !== passwordRepeat) {
-    return res.status(400).json({ error: "Passwörter stimmen nicht überein." });
+    return res.status(400).json({ error: "Passwords do not match." });
   }
 
   try {
@@ -41,17 +41,17 @@ router.post('/register', async (req, res) => {
     ], function (err) {
       if (err) {
         console.error(err.message);
-        return res.status(500).json({ error: "DB-Fehler" });
+        return res.status(500).json({ error: "DB-Error" });
       }
 
       return res.status(201).json({
-        message: "Registrierung erfolgreich!",
+        message: "Registration successful!",
         user: { id: this.lastID, username, email }
       });
     });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Interner Fehler bei der Registrierung" });
+    return res.status(500).json({ error: "Internal error during registration" });
   }
 });
 
@@ -60,26 +60,26 @@ router.post('/login', async (req, res) => {
   const { identifier, password, remember } = req.body;
 
   //debug
-  console.log("Anfrage-Daten:", req.body);
+  console.log("Request data:", req.body);
   const sql = `SELECT * FROM users WHERE email = ? OR username = ?`;
 
   db.get(sql, [identifier, identifier], async (err, user) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: "Datenbankfehler beim Login." });
+      return res.status(500).json({ error: "Database error during login." });
     }
 
     if (!user) {
-      return res.status(401).json({ error: "User nicht gefunden." });
+      return res.status(401).json({ error: "User not found." });
     }
 
     if (user.active !== 1) {
-      return res.status(403).json({ error: "Ihr Konto wurde deaktiviert." });
+      return res.status(403).json({ error: "Your account has been deactivated." });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Falsches Passwort." });
+      return res.status(401).json({ error: "Wrong password." });
     }
 
     //Session setzen
@@ -103,7 +103,7 @@ router.post('/login', async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Login erfolgreich für: " + identifier + "!",
+      message: "Login successful for: " + identifier + "!",
       user: { id: user.id, username: user.username, email: user.email }
     });
   });
@@ -133,28 +133,28 @@ router.post('/update', async (req, res) => {
   const { address, paymentInfoNew, passwordConfirm } = req.body;
 
   if (!req.session.user) {
-    return res.status(401).json({ error: "Nicht eingeloggt." });
+    return res.status(401).json({ error: "Not logged in." });
   }
 
   if (!passwordConfirm) {
-    return res.status(400).json({ error: "Passwort muss zur Bestätigung eingegeben werden." });
+    return res.status(400).json({ error: "Password must be entered for confirmation." });
   }
 
   // Holt den aktuellen User aus der Datenbank
   db.get('SELECT * FROM users WHERE id = ?', [req.session.user.id], async (err, user) => {
     if (err) {
       console.error('DB-Fehler:', err.message);
-      return res.status(500).json({ error: "Serverfehler beim Lesen des Users." });
+      return res.status(500).json({ error: "Server error when reading the user." });
     }
 
     if (!user) {
-      return res.status(404).json({ error: "Benutzer nicht gefunden." });
+      return res.status(404).json({ error: "User not found." });
     }
 
     // Passwort prüfen
     const match = await bcrypt.compare(passwordConfirm, user.password);
     if (!match) {
-      return res.status(403).json({ error: "Falsches Passwort." });
+      return res.status(403).json({ error: "Wrong password." });
     }
 
     // Update durchführen
@@ -165,31 +165,30 @@ router.post('/update', async (req, res) => {
         `;
     db.run(stmt, [address || user.address, paymentInfoNew || user.paymentInfo, req.session.user.id], function (err) {
       if (err) {
-        console.error('DB-Update-Fehler:', err.message);
-        return res.status(500).json({ error: "Fehler beim Aktualisieren der Daten." });
+        console.error('DB update error:', err.message);
+        return res.status(500).json({ error: "Error when updating the data." });
       }
 
       req.session.user.paymentInfo = paymentInfoNew || user.paymentInfo;
       req.session.user.address = address || user.address;
 
-      return res.json({ message: "Daten erfolgreich aktualisiert!" });
+      return res.json({ message: "Data successfully updated!" });
     });
   });
 });
-
 
 // Logout-Route
 router.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
-      console.error("Logout-Fehler:", err);
-      return res.status(500).json({ error: "Logout fehlgeschlagen" });
+      console.error("Logout error:", err);
+      return res.status(500).json({ error: "Logout failed" });
     }
 
     // Cookie löschen (optional)
     res.clearCookie('connect.sid');
-    return res.json({ message: "Logout erfolgreich" });
-    console.log("User wurde ausgeloggt. Cookie wird gelöscht.");
+    return res.json({ message: "Logout successful" });
+    console.log("User has been logged out. Cookie will be deleted.");
   });
 });
 

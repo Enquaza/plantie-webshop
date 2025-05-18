@@ -5,37 +5,37 @@ const db = require('../config/db');
 // Admin-Check Middleware (du kannst auch direkt req.session.user.isAdmin prüfen)
 function isAdmin(req, res, next) {
     if (!req.session.user || !req.session.user.isAdmin) {
-        return res.status(403).json({ error: "Nicht berechtigt." });
+        return res.status(403).json({ error: "Not authorized." });
     }
     next();
 }
 
-// 1️⃣ Alle Kunden abrufen
+// Alle Kunden abrufen
 router.get('/customers', isAdmin, (req, res) => {
     const sql = `SELECT id, username, email, active FROM users WHERE isAdmin = 0`;
     db.all(sql, [], (err, rows) => {
         if (err) {
-            console.error("Fehler beim Laden der Kunden:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error when loading customers:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
         res.json(rows);
     });
 });
 
-// 2️⃣ Kunden aktiv/deaktiv schalten
+// Kunden aktiv/deaktiv schalten
 router.post('/customers/toggle', isAdmin, (req, res) => {
     const { customerId, active } = req.body;
     const sql = `UPDATE users SET active = ? WHERE id = ?`;
     db.run(sql, [active ? 1 : 0, customerId], function (err) {
         if (err) {
-            console.error("Fehler beim Aktualisieren des Kundenstatus:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error when updating the customer status:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
         res.json({ success: true });
     });
 });
 
-// 3️⃣ Bestellungen eines Kunden abrufen
+// Bestellungen eines Kunden abrufen
 router.get('/customers/:customerId/orders', isAdmin, (req, res) => {
     const customerId = req.params.customerId;
 
@@ -49,27 +49,27 @@ router.get('/customers/:customerId/orders', isAdmin, (req, res) => {
 
     db.all(sql, [customerId], (err, rows) => {
         if (err) {
-            console.error("Fehler beim Laden der Bestellungen:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error loading the orders:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
         res.json(rows);
     });
 });
 
-// 4️⃣ Produkt aus Bestellung entfernen
+// Produkt aus Bestellung entfernen
 router.post('/customers/orders/remove', isAdmin, (req, res) => {
     const { orderId, productId } = req.body;
 
     const sql = `DELETE FROM order_items WHERE order_id = ? AND product_id = ?`;
     db.run(sql, [orderId, productId], function (err) {
         if (err) {
-            console.error("Fehler beim Entfernen des Produkts aus der Bestellung:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error when removing the product from the order:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
         if (this.changes > 0) {
             res.json({ success: true });
         } else {
-            res.json({ success: false, message: "Produkt oder Bestellung nicht gefunden." });
+            res.json({ success: false, message: "Product or order not found." });
         }
     });
 });

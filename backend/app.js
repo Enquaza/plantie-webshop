@@ -54,13 +54,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Server läuft auf http://localhost:${PORT}`);
 });
-
-// Backend Server starten: npm run dev
-// Frontend Server: im dir /frontend:  http-server -p 5500
-//
-// Backend Server stoppen:
-// netstat -ano | findstr :3000
-// taskkill /PID 12345 /F
-
-// TODO: Products.html -> Nach klick auf warenkorb popup
-// Hochladen von Bildern in Admin products

@@ -8,15 +8,15 @@ router.post('/add', (req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
 
     if (!userId) {
-        return res.status(401).json({ error: "Bitte zuerst einloggen!" });
+        return res.status(401).json({ error: "Please log in first!" });
     }
 
     // 1. Hat der User schon einen Warenkorb?
     const findCartSql = `SELECT id FROM carts WHERE user_id = ?`;
     db.get(findCartSql, [userId], (err, cartRow) => {
         if (err) {
-            console.error("Fehler beim Suchen des Warenkorbs:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error when searching the cart:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
 
         const cartId = cartRow ? cartRow.id : null;
@@ -26,8 +26,8 @@ router.post('/add', (req, res) => {
             const checkItemSql = `SELECT id, quantity FROM cart_items WHERE cart_id = ? AND product_id = ?`;
             db.get(checkItemSql, [cartId, productId], (err, itemRow) => {
                 if (err) {
-                    console.error("Fehler beim Prüfen des Artikels:", err.message);
-                    return res.status(500).json({ error: "Serverfehler." });
+                    console.error("Error when checking the item:", err.message);
+                    return res.status(500).json({ error: "Server error." });
                 }
 
                 if (itemRow) {
@@ -35,8 +35,8 @@ router.post('/add', (req, res) => {
                     const updateSql = `UPDATE cart_items SET quantity = quantity + 1 WHERE id = ?`;
                     db.run(updateSql, [itemRow.id], function (err) {
                         if (err) {
-                            console.error("Fehler beim Erhöhen der Menge:", err.message);
-                            return res.status(500).json({ error: "Serverfehler." });
+                            console.error("Error when increasing the quantity:", err.message);
+                            return res.status(500).json({ error: "Server error." });
                         }
                         res.json({ success: true });
                     });
@@ -45,8 +45,8 @@ router.post('/add', (req, res) => {
                     const insertSql = `INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, 1)`;
                     db.run(insertSql, [cartId, productId], function (err) {
                         if (err) {
-                            console.error("Fehler beim Einfügen des Produkts:", err.message);
-                            return res.status(500).json({ error: "Serverfehler." });
+                            console.error("Error when inserting the product:", err.message);
+                            return res.status(500).json({ error: "Server error." });
                         }
                         res.json({ success: true });
                     });
@@ -61,8 +61,8 @@ router.post('/add', (req, res) => {
             const createCartSql = `INSERT INTO carts (user_id) VALUES (?)`;
             db.run(createCartSql, [userId], function (err) {
                 if (err) {
-                    console.error("Fehler beim Erstellen des Warenkorbs:", err.message);
-                    return res.status(500).json({ error: "Serverfehler." });
+                    console.error("Error when creating the cart:", err.message);
+                    return res.status(500).json({ error: "Server error." });
                 }
                 addItemToCart(this.lastID);
             });
@@ -77,19 +77,19 @@ router.post('/remove', (req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
 
     if (!userId) {
-        return res.status(401).json({ error: "Bitte zuerst einloggen!" });
+        return res.status(401).json({ error: "Please log in first!" });
     }
 
     // Schritt 1: Den Warenkorb des Users finden
     const findCartSql = `SELECT id FROM carts WHERE user_id = ?`;
     db.get(findCartSql, [userId], (err, cartRow) => {
         if (err) {
-            console.error("Fehler beim Suchen des Warenkorbs:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error when searching the cart:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
 
         if (!cartRow) {
-            return res.status(400).json({ error: "Kein Warenkorb gefunden." });
+            return res.status(400).json({ error: "No cart found." });
         }
 
         const cartId = cartRow.id;
@@ -98,14 +98,14 @@ router.post('/remove', (req, res) => {
         const deleteSql = `DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?`;
         db.run(deleteSql, [cartId, productId], function (err) {
             if (err) {
-                console.error("Fehler beim Entfernen des Produkts:", err.message);
-                return res.status(500).json({ error: "Serverfehler." });
+                console.error("Error when removing the product:", err.message);
+                return res.status(500).json({ error: "Server error." });
             }
 
             if (this.changes > 0) {
                 res.json({ success: true });
             } else {
-                res.json({ success: false, message: "Produkt nicht im Warenkorb gefunden." });
+                res.json({ success: false, message: "Product not found in cart." });
             }
         });
     });
@@ -129,8 +129,8 @@ router.get('/', (req, res) => {
 
     db.all(sql, [userId], (err, rows) => {
         if (err) {
-            console.error("Fehler beim Laden des Warenkorbs:", err.message);
-            return res.status(500).json({ error: "Serverfehler." });
+            console.error("Error loading the cart:", err.message);
+            return res.status(500).json({ error: "Server error." });
         }
         res.json(rows);
     });
@@ -141,23 +141,23 @@ router.post('/checkout', (req, res) => {
     const paymentMethod = req.body.paymentMethod;
 
     if (!userId) {
-        return res.status(401).json({ success: false, message: "Bitte einloggen!" });
+        return res.status(401).json({ success: false, message: "Please log in first!" });
     }
 
     if (!paymentMethod) {
-        return res.status(400).json({ success: false, message: "Zahlungsmethode fehlt." });
+        return res.status(400).json({ success: false, message: "Payment method missing." });
     }
 
     // 1. Warenkorb finden
     const findCartSql = `SELECT id FROM carts WHERE user_id = ?`;
     db.get(findCartSql, [userId], (err, cartRow) => {
         if (err) {
-            console.error("Fehler beim Suchen des Warenkorbs:", err.message);
-            return res.status(500).json({ success: false, message: "Serverfehler." });
+            console.error("Error when searching the cart:", err.message);
+            return res.status(500).json({ success: false, message: "Server error." });
         }
 
         if (!cartRow) {
-            return res.status(400).json({ success: false, message: "Kein Warenkorb gefunden." });
+            return res.status(400).json({ success: false, message: "No cart found." });
         }
 
         const cartId = cartRow.id;
@@ -170,20 +170,20 @@ router.post('/checkout', (req, res) => {
         `;
         db.all(cartItemsSql, [cartId], (err, items) => {
             if (err) {
-                console.error("Fehler beim Abrufen der Cart Items:", err.message);
-                return res.status(500).json({ success: false, message: "Serverfehler." });
+                console.error("Error when retrieving cart items:", err.message);
+                return res.status(500).json({ success: false, message: "Server error." });
             }
 
             if (!items || items.length === 0) {
-                return res.status(400).json({ success: false, message: "Warenkorb ist leer." });
+                return res.status(400).json({ success: false, message: "Cart is empty." });
             }
 
             // 3. Bestellung (orders) erstellen → Zahlungsmethode speichern!
             const insertOrderSql = `INSERT INTO orders (user_id, payment_method) VALUES (?, ?)`;
             db.run(insertOrderSql, [userId, paymentMethod], function (err) {
                 if (err) {
-                    console.error("Fehler beim Erstellen der Bestellung:", err.message);
-                    return res.status(500).json({ success: false, message: "Serverfehler." });
+                    console.error("Error when creating the order:", err.message);
+                    return res.status(500).json({ success: false, message: "Server error." });
                 }
 
                 const orderId = this.lastID;
@@ -196,8 +196,8 @@ router.post('/checkout', (req, res) => {
                 items.forEach(item => {
                     db.run(insertItemSql, [orderId, item.product_id, item.quantity], function (err) {
                         if (err) {
-                            console.error("Fehler beim Hinzufügen von Produkten zur Bestellung:", err.message);
-                            return res.status(500).json({ success: false, message: "Serverfehler." });
+                            console.error("Error when adding products to the order:", err.message);
+                            return res.status(500).json({ success: false, message: "Server error." });
                         }
 
                         itemsProcessed++;
@@ -207,8 +207,8 @@ router.post('/checkout', (req, res) => {
                             const deleteCartItemsSql = `DELETE FROM cart_items WHERE cart_id = ?`;
                             db.run(deleteCartItemsSql, [cartId], function (err) {
                                 if (err) {
-                                    console.error("Fehler beim Leeren des Warenkorbs:", err.message);
-                                    return res.status(500).json({ success: false, message: "Serverfehler." });
+                                    console.error("Error when emptying the cart:", err.message);
+                                    return res.status(500).json({ success: false, message: "Server error." });
                                 }
 
                                 res.json({ success: true });
@@ -273,6 +273,5 @@ router.post('/update', (req, res) => {
         });
     });
 });
-
 
 module.exports = router;

@@ -7,9 +7,9 @@ const dbPath = path.resolve(__dirname, 'plantie.db');
 // Verbindung zur Datenbank herstellen
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('Fehler beim Öffnen der Datenbank:', err.message);
+        console.error('Error when opening the database:', err.message);
     } else {
-        console.log('Verbunden mit SQLite-Datenbank unter:', dbPath);
+        console.log('Connected to SQLite database at:', dbPath);
     }
 });
 
@@ -25,7 +25,7 @@ db.serialize(() => {
     )
   `, (err) => {
         if (err) {
-            console.error("Fehler beim Erstellen der Tabelle:", err.message);
+            console.error("Error when creating the table:", err.message);
         }
     });
     // Produkt-Tabelle
@@ -41,7 +41,7 @@ db.serialize(() => {
     )
   `, (err) => {
         if (err) {
-            console.error("Fehler beim Erstellen der Tabelle 'products':", err.message);
+            console.error("Error when creating the 'products' table:", err.message);
         }
     });
 });

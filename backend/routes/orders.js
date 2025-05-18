@@ -4,14 +4,14 @@ const db = require('../config/db');
 
 router.get('/', (req, res) => {
     if (!req.session.user) {
-        return res.status(401).json({ error: "Nicht eingeloggt" });
+        return res.status(401).json({ error: "Not logged in" });
     }
 
     const sql = `SELECT id, created_at, payment_method FROM orders WHERE user_id = ? ORDER BY created_at DESC`;
     db.all(sql, [req.session.user.id], (err, rows) => {
         if (err) {
-            console.error("Fehler beim Abrufen der Bestellungen:", err.message);
-            return res.status(500).json({ error: "Serverfehler" });
+            console.error("Error when retrieving orders:", err.message);
+            return res.status(500).json({ error: "Server error" });
         }
         res.json(rows);
     });
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
 router.get('/invoice/:orderId', (req, res) => {
     if (!req.session.user) {
-        return res.status(401).send("Nicht eingeloggt");
+        return res.status(401).send("Not logged in");
     }
 
     const orderId = req.params.orderId;
@@ -27,7 +27,7 @@ router.get('/invoice/:orderId', (req, res) => {
     const sqlOrder = `SELECT * FROM orders WHERE id = ? AND user_id = ?`;
     db.get(sqlOrder, [orderId, req.session.user.id], (err, order) => {
         if (err || !order) {
-            return res.status(404).send("Bestellung nicht gefunden");
+            return res.status(404).send("Order not found");
         }
 
         const sqlItems = `
@@ -38,7 +38,7 @@ router.get('/invoice/:orderId', (req, res) => {
         `;
         db.all(sqlItems, [orderId], (err, items) => {
             if (err) {
-                return res.status(500).send("Fehler beim Laden der Bestellpositionen");
+                return res.status(500).send("Error when loading the order items");
             }
 
             // Rechnungsnummer generieren
@@ -72,6 +72,5 @@ router.get('/invoice/:orderId', (req, res) => {
         });
     });
 });
-
 
 module.exports = router;
