@@ -25,6 +25,7 @@ const updateForm = document.getElementById('update-form');
 updateForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const email = updateForm.newEmail.value;
     const address = updateForm.address.value;
     const paymentInfoNew = updateForm.paymentInfoNew.value;
     const passwordConfirm = updateForm.passwordConfirm.value;
@@ -39,7 +40,7 @@ updateForm.addEventListener('submit', async (e) => {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ address, paymentInfoNew, passwordConfirm })
+            body: JSON.stringify({ email, address, paymentInfoNew, passwordConfirm })
         });
 
         const result = await res.json();

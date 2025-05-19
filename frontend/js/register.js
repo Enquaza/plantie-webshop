@@ -3,7 +3,6 @@ const msg = document.getElementById('msg');
 
 // Nutzer drückt auf Registrieren -> Funktion wird gefeuert
 form.addEventListener('submit', async (e) => {
-
     e.preventDefault();
 
     const data = {

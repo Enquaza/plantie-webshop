@@ -27,32 +27,48 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: "Passwords do not match." });
   }
 
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const checkUserStmt = `SELECT * FROM users WHERE username = ?`;
+  db.get(checkUserStmt, [username], async (err, user) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: "DB-Error" });
+    }
 
-    const stmt = `INSERT INTO users (
-      salutation, firstName, lastName, address, zipCode, city,
-      email, username, password, paymentInfo
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    if (username.toLowerCase() === "admin") {
+      return res.status(400).json({ error: "Username cannot be \"admin\"." });
+    }
 
-    db.run(stmt, [
-      salutation, firstName, lastName, address, zipCode, city,
-      email, username, hashedPassword, paymentInfo
-    ], function (err) {
-      if (err) {
-        console.error(err.message);
-        return res.status(500).json({ error: "DB-Error" });
-      }
+    if (user) {
+      return res.status(400).json({ error: "Username already exists." });
+    }
 
-      return res.status(201).json({
-        message: "Registration successful!",
-        user: { id: this.lastID, username, email }
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const insertStmt = `INSERT INTO users (
+        salutation, firstName, lastName, address, zipCode, city,
+        email, username, password, paymentInfo
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+      db.run(insertStmt, [
+        salutation, firstName, lastName, address, zipCode, city,
+        email, username, hashedPassword, paymentInfo
+      ], function (err) {
+        if (err) {
+          console.error(err.message);
+          return res.status(500).json({ error: "DB-Error" });
+        }
+
+        return res.status(201).json({
+          message: "Registration successful!",
+          user: { id: this.lastID, username, email }
+        });
       });
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Internal error during registration" });
-  }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal error during registration" });
+    }
+  });
 });
 
 // Login
@@ -130,7 +146,7 @@ router.get('/check', (req, res) => {
 
 // ✏️ Update-Route für Userdaten
 router.post('/update', async (req, res) => {
-  const { address, paymentInfoNew, passwordConfirm } = req.body;
+  const { email, address, paymentInfoNew, passwordConfirm } = req.body;
 
   if (!req.session.user) {
     return res.status(401).json({ error: "Not logged in." });
@@ -160,10 +176,12 @@ router.post('/update', async (req, res) => {
     // Update durchführen
     const stmt = `
           UPDATE users
-          SET address = ?, paymentInfo = ?
+          SET email = ?, address = ?, paymentInfo = ?
           WHERE id = ?
         `;
-    db.run(stmt, [address || user.address, paymentInfoNew || user.paymentInfo, req.session.user.id], function (err) {
+    db.run(stmt, [
+        email || user.email, address || user.address, paymentInfoNew || user.paymentInfo,
+      req.session.user.id], function (err) {
       if (err) {
         console.error('DB update error:', err.message);
         return res.status(500).json({ error: "Error when updating the data." });
@@ -171,6 +189,7 @@ router.post('/update', async (req, res) => {
 
       req.session.user.paymentInfo = paymentInfoNew || user.paymentInfo;
       req.session.user.address = address || user.address;
+      req.session.user.email = email || user.email;
 
       return res.json({ message: "Data successfully updated!" });
     });

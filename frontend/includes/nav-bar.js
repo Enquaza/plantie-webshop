@@ -4,7 +4,7 @@ function loadNavbar() {
         .then(data => {
             document.getElementById('navbar').innerHTML = data;
             updateLoginStatus();
-            setupDropdownHover();
+            // setupDropdownHover();
         });
 }
 
