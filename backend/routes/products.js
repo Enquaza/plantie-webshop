@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../config/db');
 const multer = require('multer');
 const path = require('path');
+const sharp = require('sharp');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -51,28 +52,44 @@ router.get('/', (req, res) => {
 });
 
 // Add a new product
-router.post('/', upload.single('imageFile'), (req, res) => {
+router.post('/', upload.single('imageFile'), async (req, res) => {
     const { name, description, category, level, price, rating } = req.body;
     const image = req.file ? req.file.filename : null;
+    const originalImagePath = req.file.path;
 
     if (!name || !category || !price || !rating || !image) {
         return res.status(400).json({ message: "All fields must be filled out." });
     }
 
-    const sql = `
-        INSERT INTO products (name, description, category, level, price, rating, image)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-    const params = [name, description, category, level, price, rating, image];
+    const croppedFilename = 'cropped_' + req.file.filename;
+    const croppedImagePath = path.join('frontend/img', croppedFilename);
 
-    db.run(sql, params, function (err) {
-        if (err) {
-            console.error("Error when adding the product:", err.message);
-            return res.status(500).json({ message: "Database error." });
-        }
+    try {
+        await sharp(originalImagePath)
+            .resize(300, 300, {
+                fit: sharp.fit.cover,
+                position: "centre"
+            })
+            .toFile(croppedImagePath);
 
-        res.json({ success: true, message: "Product successfully added." });
-    });
+        const sql = `
+            INSERT INTO products (name, description, category, level, price, rating, image)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+        const params = [name, description, category, level, price, rating, croppedFilename];
+
+        db.run(sql, params, function (err) {
+            if (err) {
+                console.error("Error when adding the product:", err.message);
+                return res.status(500).json({ message: "Database error." });
+            }
+
+            res.json({ success: true, message: "Product successfully added." });
+        });
+    } catch (err) {
+        console.error("Error cropping image:", err);
+        return res.status(500).json({ message: "Image processing failed." });
+    }
 });
 
 // Delete Product
@@ -94,4 +111,3 @@ router.delete('/:id', (req, res) => {
 });
 
 module.exports = router;
-//Test

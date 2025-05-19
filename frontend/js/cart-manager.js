@@ -158,7 +158,6 @@ async function changeQuantity(productId, delta) {
     }
 }
 
-
 // Lade den Warenkorb beim Öffnen der Seite
 window.addEventListener('DOMContentLoaded', () => {
     loadCart();
